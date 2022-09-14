@@ -280,11 +280,11 @@ class CaesarCipher:
 
 
 # Part 2: English dictionary word list
-english_word_list = open("/Users/rodney/school/cs182/ps0/english_words_list.txt",'r').readlines()
+english_word_list = open("english_words_list.txt",'r').readlines()
 english_word_list = [word.rstrip("\n") for word in english_word_list]
 
 # Bonus Question: English language letter frequency table
-english_letter_freq_table = open("/Users/rodney/school/cs182/ps0/letter_freq_table.txt",'r').readlines()
+english_letter_freq_table = open("letter_freq_table.txt",'r').readlines()
 english_letter_freq_table = [tuple(row.rstrip("\n").split("\t")) for row in english_letter_freq_table]
 english_letter_freq_table = {letter:float(freq) for letter,freq in english_letter_freq_table}
 
