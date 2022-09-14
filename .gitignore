@@ -1,0 +1,18 @@
+// latex
+*.aux
+*.fdb_latexmk
+*.fls
+*.log
+*.synctex.gz
+*.out
+
+// python
+__pycache__
+*.pyc
+.ipynb_checkpoints
+
+// vscode
+.vscode/
+
+// macos
+.DS_Store
