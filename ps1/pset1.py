@@ -350,6 +350,7 @@ def breadthFirstSearch(problem: SearchProblem) -> List[str]:
         (state, action) = previous[ptr]
         ptr = state
         actions.append(ACTION_LIST[action])
+    actions.reverse()
 
     return actions
 
@@ -379,27 +380,27 @@ def customHeuristic(state: GridworldState, problem: Optional[GridworldSearchProb
     raise NotImplementedError
 
 
-# def aStarSearch(problem: SearchProblem, heuristic=nullHeuristic) -> List[str]:
-#     """Search the node that has the lowest combined cost and heuristic first.
-#     This function takes in an arbitrary heuristic (which itself is a function) as an input."""
+def aStarSearch(problem: SearchProblem, heuristic=nullHeuristic) -> List[str]:
+    """Search the node that has the lowest combined cost and heuristic first.
+    This function takes in an arbitrary heuristic (which itself is a function) as an input."""
 
-#     priorityQueue = PriorityQueue()
-#     visited = set()
+    priorityQueue = PriorityQueue()
+    visited = set()
     
-#     startState = problem.getStartState()
-#     priorityQueue.push((startState, []), heuristic(startState, problem))
+    startState = problem.getStartState()
+    priorityQueue.push((startState, []), heuristic(startState, problem))
 
-#     while not priorityQueue.isEmpty():
-#         (currentState, actionsToGetToCurrent) = priorityQueue.pop()
-#         if problem.isGoalState(currentState):
-#             return [ACTION_LIST[action] for action in actionsToGetToCurrent]
-#         visited.add(currentState)
+    while not priorityQueue.isEmpty():
+        (currentState, actionsToGetToCurrent) = priorityQueue.pop()
+        if problem.isGoalState(currentState):
+            return [ACTION_LIST[action] for action in actionsToGetToCurrent]
+        visited.add(currentState)
 
-#         successors = problem.getSuccessors(currentState)
-#         for (state, action, cost) in successors:
-#             if state not in visited:
-#                 priorityQueue.push(
-#                     (state, actionsToGetToCurrent + [action]), heuristic(state, problem))
+        successors = problem.getSuccessors(currentState)
+        for (state, action, cost) in successors:
+            if state not in visited:
+                priorityQueue.push(
+                    (state, actionsToGetToCurrent + [action]), heuristic(state, problem))
 def aStarSearch(problem: SearchProblem, heuristic=nullHeuristic) -> List[str]:
     """Search the node that has the lowest combined cost and heuristic first.
     This function takes in an arbitrary heuristic (which itself is a function) as an input."""
@@ -429,6 +430,7 @@ def aStarSearch(problem: SearchProblem, heuristic=nullHeuristic) -> List[str]:
         (state, action) = previous[ptr]
         ptr = state
         actions.append(ACTION_LIST[action])
+    actions.reverse()
 
     return actions
     
