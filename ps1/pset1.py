@@ -162,7 +162,10 @@ class GridworldState():
         return f'{{ location: {self.location}, residencesVisited: {str(self.residencesVisited)} }}'
     
     def __eq__(self, other) : 
-        return self.__dict__ == other.__dict__
+        return self.location == other.location and self.residencesVisited == other.residencesVisited
+    
+    def __hash__(self):
+        return hash((self.location, *self.residencesVisited))
 
 
 class GridworldSearchProblem(SearchProblem):
@@ -288,7 +291,7 @@ def depthFirstSearch(problem: SearchProblem) -> List[str]:
     """
 
     stack = Stack()
-    visited = []
+    visited = set()
     
     stack.push((problem.getStartState(), []))
 
@@ -296,7 +299,7 @@ def depthFirstSearch(problem: SearchProblem) -> List[str]:
         (currentState, actionsToGetToCurrent) = stack.pop()
         if problem.isGoalState(currentState):
             return actionsToGetToCurrent
-        visited.append(currentState)
+        visited.add(currentState)
 
         successors = problem.getSuccessors(currentState)
         successors.reverse()
@@ -306,7 +309,7 @@ def depthFirstSearch(problem: SearchProblem) -> List[str]:
 
 def breadthFirstSearch(problem: SearchProblem) -> List[str]:
     queue = Queue()
-    visited = []
+    visited = set()
     
     queue.push((problem.getStartState(), []))
 
@@ -314,7 +317,7 @@ def breadthFirstSearch(problem: SearchProblem) -> List[str]:
         (currentState, actionsToGetToCurrent) = queue.pop()
         if problem.isGoalState(currentState):
             return actionsToGetToCurrent
-        visited.append(currentState)
+        visited.add(currentState)
 
         successors = problem.getSuccessors(currentState)
         for (state, action, cost) in successors:
@@ -352,7 +355,7 @@ def aStarSearch(problem: SearchProblem, heuristic=nullHeuristic) -> List[str]:
     This function takes in an arbitrary heuristic (which itself is a function) as an input."""
 
     priorityQueue = PriorityQueue()
-    visited = []
+    visited = set()
     
     startState = problem.getStartState()
     priorityQueue.push((startState, []), heuristic(startState, problem))
@@ -361,7 +364,7 @@ def aStarSearch(problem: SearchProblem, heuristic=nullHeuristic) -> List[str]:
         (currentState, actionsToGetToCurrent) = priorityQueue.pop()
         if problem.isGoalState(currentState):
             return actionsToGetToCurrent
-        visited.append(currentState)
+        visited.add(currentState)
 
         successors = problem.getSuccessors(currentState)
         for (state, action, cost) in successors:
