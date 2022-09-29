@@ -233,40 +233,40 @@ class GridworldSearchProblem(SearchProblem):
             newLocationCol = state.location[1]
             newLocation = (newLocationRow, newLocationCol)
             newLocationVal = self.matrix[newLocationRow][newLocationCol]
-            newResidencesVisited = state.residencesVisited.copy()
-            if newLocationVal == 1:
-                newResidencesVisited.add(newLocation)
             if newLocationVal != -1:
+                newResidencesVisited = state.residencesVisited.copy()
+                if newLocationVal == 1:
+                    newResidencesVisited.add(newLocation)
                 successors.append((GridworldState(newLocation, newResidencesVisited), "UP", 1))
         if state.location[1] + 1 < self.numCols:
             newLocationRow = state.location[0] 
             newLocationCol = state.location[1] + 1
             newLocation = (newLocationRow, newLocationCol)
             newLocationVal = self.matrix[newLocationRow][newLocationCol]
-            newResidencesVisited = state.residencesVisited.copy()
-            if newLocationVal == 1:
-                newResidencesVisited.add(newLocation)
             if newLocationVal != -1:
+                newResidencesVisited = state.residencesVisited.copy()
+                if newLocationVal == 1:
+                    newResidencesVisited.add(newLocation)
                 successors.append((GridworldState(newLocation, newResidencesVisited), "RIGHT", 1))
         if state.location[0] + 1 < self.numRows:
             newLocationRow = state.location[0] + 1
             newLocationCol = state.location[1] 
             newLocation = (newLocationRow, newLocationCol)
             newLocationVal = self.matrix[newLocationRow][newLocationCol]
-            newResidencesVisited = state.residencesVisited.copy()
-            if newLocationVal == 1:
-                newResidencesVisited.add(newLocation)
             if newLocationVal != -1:
+                newResidencesVisited = state.residencesVisited.copy()
+                if newLocationVal == 1:
+                    newResidencesVisited.add(newLocation)
                 successors.append((GridworldState(newLocation, newResidencesVisited), "DOWN", 1))
         if state.location[1] - 1 >= 0:
             newLocationRow = state.location[0]
             newLocationCol = state.location[1] - 1
             newLocation = (newLocationRow, newLocationCol)
             newLocationVal = self.matrix[newLocationRow][newLocationCol]
-            newResidencesVisited = state.residencesVisited.copy()
-            if newLocationVal == 1:
-                newResidencesVisited.add(newLocation)
             if newLocationVal != -1:
+                newResidencesVisited = state.residencesVisited.copy()
+                if newLocationVal == 1:
+                    newResidencesVisited.add(newLocation)
                 successors.append((GridworldState(newLocation, newResidencesVisited), "LEFT", 1))
 
         return successors
