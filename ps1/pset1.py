@@ -144,7 +144,7 @@ class SearchProblem(abc.ABC):
         raise NotImplementedError
 
 
-ACTION_LIST = ["UP", "DOWN", "LEFT", "RIGHT"]
+ACTION_LIST = ["UP", "RIGHT", "DOWN", "LEFT"]
 
 class GridworldState():
     """
@@ -239,7 +239,7 @@ class GridworldSearchProblem(SearchProblem):
                 newResidencesVisited = state.residencesVisited.copy()
                 if newLocationVal == 1:
                     newResidencesVisited.add(newLocation)
-                successors.append((GridworldState(newLocation, newResidencesVisited), "UP", 1))
+                successors.append((GridworldState(newLocation, newResidencesVisited), 0, 1))
         if state.location[1] + 1 < self.numCols:
             newLocationRow = state.location[0] 
             newLocationCol = state.location[1] + 1
@@ -249,7 +249,7 @@ class GridworldSearchProblem(SearchProblem):
                 newResidencesVisited = state.residencesVisited.copy()
                 if newLocationVal == 1:
                     newResidencesVisited.add(newLocation)
-                successors.append((GridworldState(newLocation, newResidencesVisited), "RIGHT", 1))
+                successors.append((GridworldState(newLocation, newResidencesVisited), 1, 1))
         if state.location[0] + 1 < self.numRows:
             newLocationRow = state.location[0] + 1
             newLocationCol = state.location[1] 
@@ -259,7 +259,7 @@ class GridworldSearchProblem(SearchProblem):
                 newResidencesVisited = state.residencesVisited.copy()
                 if newLocationVal == 1:
                     newResidencesVisited.add(newLocation)
-                successors.append((GridworldState(newLocation, newResidencesVisited), "DOWN", 1))
+                successors.append((GridworldState(newLocation, newResidencesVisited), 2, 1))
         if state.location[1] - 1 >= 0:
             newLocationRow = state.location[0]
             newLocationCol = state.location[1] - 1
@@ -269,7 +269,7 @@ class GridworldSearchProblem(SearchProblem):
                 newResidencesVisited = state.residencesVisited.copy()
                 if newLocationVal == 1:
                     newResidencesVisited.add(newLocation)
-                successors.append((GridworldState(newLocation, newResidencesVisited), "LEFT", 1))
+                successors.append((GridworldState(newLocation, newResidencesVisited), 3, 1))
 
         return successors
 
@@ -300,7 +300,7 @@ def depthFirstSearch(problem: SearchProblem) -> List[str]:
     while not stack.isEmpty():
         (currentState, actionsToGetToCurrent) = stack.pop()
         if problem.isGoalState(currentState):
-            return actionsToGetToCurrent
+            return [ACTION_LIST[action] for action in actionsToGetToCurrent]
         visited.add(currentState)
 
         successors = problem.getSuccessors(currentState)
@@ -318,7 +318,7 @@ def breadthFirstSearch(problem: SearchProblem) -> List[str]:
     while not queue.isEmpty():
         (currentState, actionsToGetToCurrent) = queue.pop()
         if problem.isGoalState(currentState):
-            return actionsToGetToCurrent
+            return [ACTION_LIST[action] for action in actionsToGetToCurrent]
         visited.add(currentState)
 
         successors = problem.getSuccessors(currentState)
@@ -365,7 +365,7 @@ def aStarSearch(problem: SearchProblem, heuristic=nullHeuristic) -> List[str]:
     while not priorityQueue.isEmpty():
         (currentState, actionsToGetToCurrent) = priorityQueue.pop()
         if problem.isGoalState(currentState):
-            return actionsToGetToCurrent
+            return [ACTION_LIST[action] for action in actionsToGetToCurrent]
         visited.add(currentState)
 
         successors = problem.getSuccessors(currentState)
