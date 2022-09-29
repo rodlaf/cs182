@@ -152,20 +152,22 @@ class GridworldState():
     """
 
     location = None
-    residencesVisited = set()
+    residencesVisited = None
+    compHash = None
 
     def __init__(self, location, residencesVisited):
         self.location = location
         self.residencesVisited = residencesVisited
+        self.compHash = hash((self.location, *self.residencesVisited))
 
     def __str__(self) -> str:
         return f'{{ location: {self.location}, residencesVisited: {str(self.residencesVisited)} }}'
     
     def __eq__(self, other) : 
-        return self.location == other.location and self.residencesVisited == other.residencesVisited
+        return self.compHash == other.compHash
     
     def __hash__(self):
-        return hash((self.location, *self.residencesVisited))
+        return self.compHash
 
 
 class GridworldSearchProblem(SearchProblem):
