@@ -309,23 +309,50 @@ def depthFirstSearch(problem: SearchProblem) -> List[str]:
             if state not in visited:
                 stack.push((state, actionsToGetToCurrent + [action]))
 
+# def breadthFirstSearch(problem: SearchProblem) -> List[str]:
+#     queue = Queue()
+#     visited = set()
+    
+#     queue.push((problem.getStartState(), []))
+
+#     while not queue.isEmpty():
+#         (currentState, actionsToGetToCurrent) = queue.pop()
+#         if problem.isGoalState(currentState):
+#             return [ACTION_LIST[action] for action in actionsToGetToCurrent]
+#         visited.add(currentState)
+
+#         successors = problem.getSuccessors(currentState)
+#         for (state, action, cost) in successors:
+#             if state not in visited:
+#                 queue.push((state, actionsToGetToCurrent + [action]))
 def breadthFirstSearch(problem: SearchProblem) -> List[str]:
     queue = Queue()
     visited = set()
+    previous = {}
     
-    queue.push((problem.getStartState(), []))
+    queue.push(problem.getStartState())
 
     while not queue.isEmpty():
-        (currentState, actionsToGetToCurrent) = queue.pop()
+        currentState = queue.pop()
         if problem.isGoalState(currentState):
-            return [ACTION_LIST[action] for action in actionsToGetToCurrent]
+            break
         visited.add(currentState)
 
         successors = problem.getSuccessors(currentState)
-        for (state, action, cost) in successors:
+        for (state, action, _) in successors:
             if state not in visited:
-                queue.push((state, actionsToGetToCurrent + [action]))
+                previous[state] = (currentState, action)
+                queue.push(state)
     
+    ptr = currentState
+    actions = []
+    while ptr in previous:
+        (state, action) = previous[ptr]
+        ptr = state
+        actions.append(ACTION_LIST[action])
+
+    return actions
+
 def nullHeuristic(state: GridworldState, problem: Optional[GridworldSearchProblem] = None) -> int:
     """
     A heuristic function estimates the cost from the current state to the nearest goal in the
@@ -352,27 +379,58 @@ def customHeuristic(state: GridworldState, problem: Optional[GridworldSearchProb
     raise NotImplementedError
 
 
+# def aStarSearch(problem: SearchProblem, heuristic=nullHeuristic) -> List[str]:
+#     """Search the node that has the lowest combined cost and heuristic first.
+#     This function takes in an arbitrary heuristic (which itself is a function) as an input."""
+
+#     priorityQueue = PriorityQueue()
+#     visited = set()
+    
+#     startState = problem.getStartState()
+#     priorityQueue.push((startState, []), heuristic(startState, problem))
+
+#     while not priorityQueue.isEmpty():
+#         (currentState, actionsToGetToCurrent) = priorityQueue.pop()
+#         if problem.isGoalState(currentState):
+#             return [ACTION_LIST[action] for action in actionsToGetToCurrent]
+#         visited.add(currentState)
+
+#         successors = problem.getSuccessors(currentState)
+#         for (state, action, cost) in successors:
+#             if state not in visited:
+#                 priorityQueue.push(
+#                     (state, actionsToGetToCurrent + [action]), heuristic(state, problem))
 def aStarSearch(problem: SearchProblem, heuristic=nullHeuristic) -> List[str]:
     """Search the node that has the lowest combined cost and heuristic first.
     This function takes in an arbitrary heuristic (which itself is a function) as an input."""
 
     priorityQueue = PriorityQueue()
     visited = set()
+    previous = {}
     
     startState = problem.getStartState()
-    priorityQueue.push((startState, []), heuristic(startState, problem))
+    priorityQueue.push(startState, heuristic(startState, problem))
 
     while not priorityQueue.isEmpty():
-        (currentState, actionsToGetToCurrent) = priorityQueue.pop()
+        currentState = priorityQueue.pop()
         if problem.isGoalState(currentState):
-            return [ACTION_LIST[action] for action in actionsToGetToCurrent]
+            break
         visited.add(currentState)
 
         successors = problem.getSuccessors(currentState)
         for (state, action, cost) in successors:
             if state not in visited:
-                priorityQueue.push(
-                    (state, actionsToGetToCurrent + [action]), heuristic(state, problem))
+                previous[state] = (currentState, action)
+                priorityQueue.push(state, heuristic(state, problem))
+    
+    ptr = currentState
+    actions = []
+    while ptr in previous:
+        (state, action) = previous[ptr]
+        ptr = state
+        actions.append(ACTION_LIST[action])
+
+    return actions
     
 
 if __name__ == "__main__":
