@@ -193,6 +193,7 @@ class GridworldSearchProblem(SearchProblem):
         self.numCols = int(firstLine.split()[1])
 
         # Define state matrix
+        self.matrix = []
         for _ in range(self.numRows):
             row = list(map(int, f.readline().split()))
             numResidencesInRow = sum([1 for pos in row if pos == 1])
@@ -203,8 +204,12 @@ class GridworldSearchProblem(SearchProblem):
         lastLine = f.readline()
         startRow = int(lastLine.split()[0])
         startCol = int(lastLine.split()[1])
+        startValue = self.matrix[startRow][startCol]
         startLocation = (startRow, startCol)
-        self.startState = GridworldState(startLocation, [])
+        startResidencesVisited = []
+        if startValue == 1:
+            startResidencesVisited = [startLocation]
+        self.startState = GridworldState(startLocation, startResidencesVisited)
 
         f.close()
 
@@ -296,11 +301,22 @@ def depthFirstSearch(problem: SearchProblem) -> List[str]:
                 stack.push((state, actionsToGetToCurrent + [action]))
 
 def breadthFirstSearch(problem: SearchProblem) -> List[str]:
-    """Search the shallowest nodes in the search tree first."""
-    "*** YOUR CODE HERE ***"
-    raise NotImplementedError
+    queue = Queue()
+    visited = []
+    
+    queue.push((problem.getStartState(), []))
 
+    while not queue.isEmpty():
+        (currentState, actionsToGetToCurrent) = queue.pop()
+        if problem.isGoalState(currentState):
+            return actionsToGetToCurrent
+        visited.append(currentState)
 
+        successors = problem.getSuccessors(currentState)
+        for (state, action, cost) in successors:
+            if state not in visited:
+                queue.push((state, actionsToGetToCurrent + [action]))
+    
 def nullHeuristic(state: "State", problem: Optional[GridworldSearchProblem] = None) -> int:
     """
     A heuristic function estimates the cost from the current state to the nearest goal in the
@@ -344,7 +360,7 @@ if __name__ == "__main__":
     ### Sample Test Cases ###
     # Run the following statements below to test the running of your program
 
-    # gridworld_search_problem = GridworldSearchProblem("pset1_sample_test_case1.txt")
+    # gridworld_search_problem = GridworldSearchProblem("pset1_sample_test_case2.txt")
 
     # assert(gridworld_search_problem.isGoalState(gridworld_search_problem.getStartState()) == False)
     # assert(gridworld_search_problem.getCostOfActions(['LEFT', 'RIGHT', 'DOWN']) == 3)
@@ -357,15 +373,15 @@ if __name__ == "__main__":
 
     gridworld_search_problem = GridworldSearchProblem("pset1_sample_test_case1.txt") # Test Case 1
     print(depthFirstSearch(gridworld_search_problem))
-    # print(breadthFirstSearch(gridworld_search_problem))
+    print(breadthFirstSearch(gridworld_search_problem))
     # print(aStarSearch(gridworld_search_problem))
     
-    # gridworld_search_problem = GridworldSearchProblem("pset1_sample_test_case2.txt") # Test Case 2
-    # print(depthFirstSearch(gridworld_search_problem))
-    # print(breadthFirstSearch(gridworld_search_problem))
+    gridworld_search_problem = GridworldSearchProblem("pset1_sample_test_case2.txt") # Test Case 2
+    print(depthFirstSearch(gridworld_search_problem))
+    print(breadthFirstSearch(gridworld_search_problem))
     # print(aStarSearch(gridworld_search_problem))
     
-    # gridworld_search_problem = GridworldSearchProblem("pset1_sample_test_case3.txt") # Test Case 3
-    # print(depthFirstSearch(gridworld_search_problem))
-    # print(breadthFirstSearch(gridworld_search_problem))
+    gridworld_search_problem = GridworldSearchProblem("pset1_sample_test_case3.txt") # Test Case 3
+    print(depthFirstSearch(gridworld_search_problem))
+    print(breadthFirstSearch(gridworld_search_problem))
     # print(aStarSearch(gridworld_search_problem))
