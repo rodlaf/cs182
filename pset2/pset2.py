@@ -482,7 +482,7 @@ def MRV_heuristic(coordinate_dict:dict)->tuple:
     """
     # For a given coordinate dict, return the next coordinate that we should fill in, use the heuristic of choosing the one with the fewest possibilities
     #### YOUR CODE HERE ####
-    pass
+    return min(coordinate_dict, key=lambda k: len(coordinate_dict[k]))
 
 
 ### Sample Test Cases ###
