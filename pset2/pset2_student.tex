@@ -1,0 +1,279 @@
+\documentclass[12pt]{amsart}
+
+%Below are some necessary packages for your course.
+\usepackage{amsfonts,latexsym,amsthm,amssymb,amsmath,amscd,euscript,tikz}
+\usepackage{framed}
+\usepackage{fullpage}
+\usepackage{comment}
+\usepackage{tikz}
+\usepackage{bm}
+\usepackage{enumerate}
+\usepackage{dsfont}
+\usepackage{hyperref}
+\usetikzlibrary{patterns}
+\usepackage{subfig}
+\usepackage{float}
+\usepackage{listings}
+
+\lstset{
+  basicstyle=\footnotesize,
+  xleftmargin=.2\textwidth, xrightmargin=.2\textwidth
+}
+
+\usetikzlibrary{decorations.markings,decorations.pathmorphing}
+\usepackage{tikz-cd}
+\usepackage{enumitem}
+\usepackage{hyperref}
+    \hypersetup{colorlinks=true,citecolor=blue,urlcolor =blue,linkbordercolor={1 0 0}}
+
+\newenvironment{statement}[1]{\smallskip\noindent\color[rgb]{0.0,0.0,0.0} {\bf #1.}}{}
+\newenvironment{solution}[1]{\vspace{5mm}\smallskip\noindent\color[rgb]{0.0,0.0,0.75} {\bf #1.}}{}
+\allowdisplaybreaks[1]
+
+%Below are the theorem, definition, example, lemma, etc. body types.
+\newtheorem{theorem}{Theorem}
+\newtheorem*{proposition}{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{postulate}[theorem]{Postulate}
+\theoremstyle{definition}
+\newtheorem{defn}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+
+\theoremstyle{remark}
+\newtheorem*{remark}{Remark}
+\newtheorem*{notation}{Notation}
+\newtheorem*{note}{Note}
+
+% You can define new commands to make your life easier.
+\newcommand{\BR}{\mathbb R}
+\newcommand{\BC}{\mathbb C}
+\newcommand{\BF}{\mathbb F}
+\newcommand{\BQ}{\mathbb Q}
+\newcommand{\BZ}{\mathbb Z}
+\newcommand{\BN}{\mathbb N}
+\newcommand{\BE}{\mathbb E}
+
+\newcommand{\CU}{\mathcal{U}}
+\newcommand{\CO}{\mathcal{O}}
+\newcommand{\CC}{\mathcal{C}}
+\newcommand{\Ob}{\operatorname{Ob}}
+\newcommand{\Mor}{\operatorname{Mor}}
+
+
+% We can even define a new command for \newcommand!
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\bP}{\mathbb{P}}
+
+\newcommand{\Hom}{\operatorname{Hom}}
+\newcommand{\End}{\operatorname{End}}
+\newcommand{\ch}{\operatorname{char}}
+\newcommand{\image}{\operatorname{im}}
+\newcommand{\kernel}{\operatorname{ker}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\sym}{\operatorname{Sym}}
+\newcommand{\im}{\operatorname{im}}
+\newcommand{\lcm}{\operatorname{lcm}}
+\newcommand{\Res}{\operatorname{Res}}
+
+\newcommand{\Pois}{\text{Pois}}
+\newcommand{\ex}{\text{exp}}
+\newcommand{\Var}{\text{Var}}
+\newcommand{\Binom}{\text{Binom}}
+\newcommand{\btheta}{\bm\theta}
+\newcommand{\bT}{\bm T}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\BP}{\mathbb{P}}
+\newcommand{\x}{\bm x}
+\newcommand{\y}{\bm y}
+\newcommand{\z}{\bm z}
+\newcommand{\bmT}{\bm T}
+\newcommand{\bmX}{\bm X}
+\newcommand{\bmY}{\bm Y}
+\newcommand{\bmZ}{\bm Z}
+\newcommand{\br}{\bm r}
+\newcommand{\bI}{\bm I}
+\newcommand{\1}{\mathds{1}}
+
+
+
+% If you want a new function, use operatorname to define that function (don't use \text)
+\renewcommand{\baselinestretch}{1.25}
+
+\title{CS 182 Fall 2022, Problem Set 2}
+
+\begin{document}
+
+\maketitle
+
+\vspace*{-0.25in}
+\centerline{Due: October 11, 2022 11:59pm}
+
+
+\begin{center}
+\end{center}
+\vspace*{0.15in}
+
+
+\noindent This problem set covers Lectures 5 through 9. The topics include multi robot systems, constraint satisfaction problems, convex optimization, integer programming, and game theory.
+\vspace*{0.35in}
+
+\begin{statement}{1} \emph{Constraint Satisfaction Problem Warmup.} (10 points)
+You are in charge of scheduling classes.
+    There are 5 courses that meet on these days and 3 instructors who will be teaching these classes.
+    Each instructor is only able to teach one class at a time.
+    The class times are as follows:
+    \begin{itemize}
+        \item Class $A$ runs from 9:00am-10:00am.
+        \item Class $B$ runs from 9:30am-10:30am.
+        \item Class $C$ runs from 10:00am-11:00am.
+        \item Class $D$ runs from 10:00am-11:00am.
+        \item Class $E$ runs from 10:30am-11:30am.
+    \end{itemize}
+    Each instructor is capable of teaching some subset of the course:
+    \begin{itemize}
+        \item Instructor $X$ is able to teach classes $C$ and $D$.
+        \item Instructor $Y$ is able to teach classes $B$, $C$, $D$, $E$
+        \item Instructor $Z$ is able to teach classes $A$, $B$, $C$,  $D$, and $E$.
+    \end{itemize}
+    
+    \vspace{3mm}
+    
+\noindent Here are the questions:
+
+\begin{enumerate}
+    \item In order to assign each class an instructor, formulate the problem as a CSP. What are the variables, domains, and constraints?
+    \item Draw the constraint graph of the CSP that you just formulated.
+    \item What is the new CSP after enforcing arc consistency? Why is this new CSP easier to solve? Provide a solution to the new arc-consistent CSP, and verify that it is also a solution to the CSP in (a).
+\end{enumerate}
+\end{statement}
+
+\newpage
+
+\begin{statement}{2}
+\textit{Sudoku Backtracking Search Algorithm.} (25 points)
+\begin{enumerate}
+
+    \item (4 points) Describe how a standard 9x9 Sudoku game board can be thought of as a constraint satisfaction problem (CSP)? What are the decision variables? What are the domains of those decision variables? What are the constraints that must be satisfied? Are the constraints unary or binary? How does backtracking search differ from simple brute-force guess-and-check? (\textbf{Note:} Sudoku was discussed in lecture, and you can read more about the game and its rules \href{https://en.wikipedia.org/wiki/Sudoku}{here}.)
+    
+    \vspace{1mm}
+    
+    \item (8 points) Complete the method for implementing forward-checking in \texttt{pset2.py} by filling in the \texttt{fwd\_checking()} method and its helper method \texttt{get\_related\_coords()}. Forward-checking should enforce arc-consistency and look for instances of foreseeable incompatibility.
+    
+    \vspace{1mm}
+    
+    \item (8 points) Complete the function for implementing the minimum remaining value (MRV) heuristic in \texttt{pset2.py} by filling in \texttt{MRV\_heuristic()} in \texttt{pset2.py}. This will be used in the select-unassigned-variable heuristic method abbreviated as \texttt{SUV\_heuristic()} that selects the next unassigned decision variable to be assigned during backtracking search. (See the instructions and hints detailed in \texttt{pset2.py} for more information.)
+    
+    \vspace{1mm}
+    
+    \item (5 points) How does the average amount of backtracking search required to find a solution change as a function of the number of values provided on the starting board? You can assume a valid solution exists with the values provided. Consider the case where there is just 1 blank square and when the entire board is blank. Explain your answer. (High-level intuition is fine, no need for a formal proof)
+    
+    \noindent\textbf{Hint:} Does having more decision variables make the solution easier or harder to find? It can be shown that a Sudoku puzzle must have at least 17 filled in values for the solution to be unique. Does the existence of multiple solutions make the solution easier or harder to find?
+    
+    \vspace{1mm}
+    
+    \item \textit{Bonus problem.} (5 bonus points) Complete the \texttt{ODV\_heuristic\_bonus()} function for a chance to win 5 bonus points on this problem set. Your function should select a value from the list of candidates to assign to the decision variable identified and return \texttt{None} if there are no candidates to choose from. Selecting a value that is more likely to lead to a solution will result in an overall faster average runtime across many test cases. The top 5 submissions by total number of iterations across a set of hidden test cases will earn 5 bonus points on this problem set. Your heuristic has access to the \texttt{SudokuGameBoard} data structure, but you may not solve the board or perform searching within your heuristic. Your heuristic should be intuitive to understand, please include a description and justification for what you chose to use in your write up to be eligible for bonus points.  
+
+\end{enumerate}
+\end{statement}
+
+\newpage
+
+\begin{statement}{3} \textit{Convex Optimization.} (25 Points) 
+\begin{enumerate}
+    \item \textit{Convex Functions.} (10 Points) Are the following functions are convex? Provide proof.
+    \begin{enumerate}[label=(\alph*)]
+        \item (3 Points) $f: \R^n \to \R$, $f(\mathbf{x}) = \max_{i} x_i$. (For example, in $\R^2$, $f((x,y)) = \max(x,y)$.)
+        \item (3 Points) $f: \R^2_{+} \to \R$, $f((x,y)) = x/y$, where $\R^2_{+}$ denotes the set $\{(x,y) \in \R^2 | y > 0\}$.
+        \item (4 Points) $f: \R \to \R$. Suppose $f_1, \dots, f_n$ are all convex functions $\R \to \R$, and let $f(x) = \max\{f_1(x), \dots, f_n(x)\}$.
+\end{enumerate}
+
+\vspace{3mm}
+
+\item \textit{Convex Sets.} (15 Points) \begin{enumerate}
+        \item (5 Points) Let $C \subseteq \R^n$ be a convex set, with $x_1, \dots, x_k \in C$, and let $\theta_1, \dots, \theta_k \in \R$ satisfy $\theta_i \ge 0$, $\theta_1 + \dots + \theta_k = 1$. Show that $\theta_1x_1 + \dots + \theta_kx_k \in C$ for all $k \ge 1$.
+        
+        \noindent\textbf{Hint:} When is this definition equivalent to the definition of convexity? Try induction. 
+        
+        \item (10 Points) Define the convex hull of a set of points $S$ in $\R^n$ as the set of all convex combinations of points in $S$:
+        \[
+        CH(S) = \{\theta_1x_1 + \dots + \theta_kx_k | x_i \in S, \theta_i \ge 0, i = 1, \dots, k, \sum_{i=1}^k \theta_i = 1\}
+        \]
+        \begin{enumerate}
+            \item (5 Points) Show that $CH(S)$ is indeed a convex set.
+            \item (5 Points) Show that the convex hull of a set $S$ is the intersection of all convex sets that contain $S$.
+        \end{enumerate}
+    \end{enumerate}
+\end{enumerate}
+\end{statement}
+
+\newpage
+\begin{statement}{4}
+\emph{Game Theory.} (20 points)
+\begin{enumerate}
+    \item (10 points) The following payoff matrix shows
+a game between Paul and Fiona.
+There are three cards on a table: a red card, a green card, and a blue card. Each player picks one card, and both players pick their card without knowing the other player's choice. Both players also know the entire payoff matrix.
+\begin{center}
+\begin{tabular}{l|l|l|l|}
+                & Paul: red & Paul: green & Paul: blue  \\ \hline
+Fiona: red   & F = 7, P = 1  & F = 9, P = 2    & F = 6, P = 3 \\ \hline
+Fiona: green & F = 8, P = 10  & F = 7, P = 5    & F = 7, P = 1 \\ \hline
+Fiona: blue     & F = 7, P = 2  & F = 8, P = 2    & F = 8, P = -3 \\ \hline
+\end{tabular}
+\end{center}
+Find a pure Nash equilibrium for this game, and then find a mixed-strategy Nash equilibrium where both players have strictly positive probability of playing each action.
+
+\vspace{5mm}
+
+\item (10 points) Recall from lecture the ice cream wars setting. Suppose that there are $k$ ice cream sellers on a beach which can be modeled as the interval $[0,1]$ and that each ice cream seller chooses a real number within that interval where they will set up their cart to sell ice cream. The ice cream being sold from all carts is identical, i.e. customers are indifferent about which cart's ice cream they buy and will always buy from the seller closest to them. Customers are uniformly distributed along the beach i.e. the interval $[0,1]$ (assume distance only matters to customers in the horizontal direction along the beach's length, the width of the beach is negligible). 
+\begin{enumerate}
+    \item (5 points) Let $k=3$, is there an arrangement of locations that the 3 ice cream sellers can choose that will result in a pure strategy Nash equilibrium? If so, describe the locations and why. If not, explain why.
+    \item (5 points) Let $k=4$, is there an arrangement of locations that the 4 ice cream sellers can choose that will result in a pure strategy Nash equilibrium? If so, describe the locations and why. If not, explain why.
+\end{enumerate}
+\end{enumerate}
+\end{statement}
+
+\newpage
+
+\begin{statement}{5}
+\emph{Integer Programming}. (15 points)
+\begin{enumerate}
+    \item \emph{Sudoku IP}. (6 points) As shown in lecture, Sudoku puzzles can also be formulated as integer programs rather than CSPs. Follow the instructions and template in the starter code of \texttt{pset2.py} and use the \texttt{cvxpy} Python package to solve this problem via integer programming. The Gradescope autograder will verify the correctness of your formulation. Compare the the efficiency of the backtracking-based and IP-based solutions. Report which one is faster experimentally based on the set of test cases provided and report the approximate runtimes for each to complete the test cases.
+    
+    \noindent\textbf{Hint:} Refer back to the lecture slides on integer programming for details of how one can formulate a Sudoku puzzle as an integer program. 
+    
+    \item \emph{Minimum Makespan Problem}. (10 points) At a factory there are $N$ tasks to complete, each of which takes a potentially different amount of processing time denoted by $p_1, p_2, \ldots, p_N$. Each task is worked on by only 1 machine and each machine can only work on 1 task at a time. There are $K$ identical machines in the factory that work equally efficiently on each of the tasks. We wish to find an assignment of the $N$ tasks to the $K$ machines such that the overall processing time to complete all $N$ tasks (i.e. the makespan) is minimized. Mathematically, let $X_1, \ldots, X_K$ denote the collection of tasks assigned to each machine, then our objective is to minimize the max over machines $j$ of the sum of $p_i$ over jobs $i$ assigned to $j$:
+    $$
+    \underset{X_1, \ldots, X_K}{\min} \underset{j}{\max} \sum_{i \: \in \: X_j} p_i 
+    $$
+    
+    \begin{enumerate}
+        \item (5 points) Formulate this problem as an integer program.
+        
+        \noindent\textbf{Hint:} Refer back to the maximin share problem in the lecture slides on integer programming for a related example. 
+        \item (5 points) Follow the instructions in the starter code and use \texttt{cvxpy} to code a solution framework for the minimum makespan problem. Provide a lower bound for the objective function based on $K$ and the input vector of processing times for each task, justify your answer.
+    \end{enumerate}
+\end{enumerate}
+
+\end{statement}
+
+\newpage
+\begin{statement}{6}
+\noindent \textbf{Collaboration, Calibration and References} (5 points).
+\begin{enumerate}
+    \item With whom did you work on this problem set? What (if any) references and/or resources did you use beyond the course lecture slides and textbook? 
+    \item (5 points) Approximately how long did it take you to complete this problem set? Please complete this brief \href{https://forms.gle/7yDD1QoEfwCfBf7u9}{survey} worth 5 points, graded for completion.
+\end{enumerate}
+\end{statement}
+
+
+\end{document}
+
