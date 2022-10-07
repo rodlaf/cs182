@@ -359,7 +359,7 @@ class SudokuGameBoard:
         related_coords = []
   
         related_coords += map(tuple, coords[coord[0], :]) # Row coords
-        related_coords += map(tuple, coords[:, coord[1]]) # Col coords
+        related_coords += map(tuple, coords[:, coord[1]]) # Column coords
 
         # Block coords
         row_start = (coord[0] // 3) * 3
@@ -394,17 +394,16 @@ class SudokuGameBoard:
         queue = []
 
         for coord_1 in self.coordinate_dict.keys():
-            for coord_2 in self.coordinate_dict.keys():
-                if coord_1 != coord_2:
+            for coord_2 in self.get_related_coords(coord_1):
+                if coord_2 in self.coordinate_dict.keys():
                     queue.append((coord_1, coord_2))
 
         while len(queue) != 0:
             coord_1, coord_2 = queue.pop()
             if revise(coord_1, coord_2):
-                for coord in self.coordinate_dict.keys():
-                    if coord != coord_1:
+                for coord in self.get_related_coords(coord_1):
+                    if coord in self.coordinate_dict.keys():
                         queue.append((coord_1, coord))
-
 
         # Check that all unassigned variables have legal candidates, otherwise return False indicating that there is a conflict in the current board arrangement
         # If an assignment to the board leaves an unassigned variable with no legal options, then the most recent assignment cannot lead to a valid solution
