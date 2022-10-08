@@ -6,6 +6,7 @@ Due October 11, 2022 at 11:59pm
 
 ### Package Imports ###
 from operator import truediv
+from webbrowser import get
 import numpy as np
 import random
 from termcolor import colored # You can install termcolor using "pip install termcolor" or "conda install termcolor"
@@ -419,41 +420,41 @@ class SudokuGameBoard:
     
 ### Sample Test Cases ###
 # Run the following assert statements below to test your function, all should run without raising an assertion error 
-if __name__ == "__main__":
-    test_board = np.array([ [0, 2, 7, 5, 3, 1, 8, 9, 6],
-                            [0, 9, 1, 2, 4, 8, 7, 5, 3],
-                            [0, 3, 5, 7, 9, 6, 2, 4, 1],
-                            [9, 5, 4, 6, 7, 3, 1, 2, 8],
-                            [1, 7, 6, 9, 8, 2, 4, 3, 5],
-                            [0, 8, 2, 1, 5, 4, 6, 7, 9],
-                            [7, 6, 9, 4, 1, 5, 3, 8, 2],
-                            [5, 1, 3, 8, 2, 7, 9, 6, 4],
-                            [0, 4, 8, 3, 6, 9, 5, 1, 7]])
+# if __name__ == "__main__":
+#     test_board = np.array([ [0, 2, 7, 5, 3, 1, 8, 9, 6],
+#                             [0, 9, 1, 2, 4, 8, 7, 5, 3],
+#                             [0, 3, 5, 7, 9, 6, 2, 4, 1],
+#                             [9, 5, 4, 6, 7, 3, 1, 2, 8],
+#                             [1, 7, 6, 9, 8, 2, 4, 3, 5],
+#                             [0, 8, 2, 1, 5, 4, 6, 7, 9],
+#                             [7, 6, 9, 4, 1, 5, 3, 8, 2],
+#                             [5, 1, 3, 8, 2, 7, 9, 6, 4],
+#                             [0, 4, 8, 3, 6, 9, 5, 1, 7]])
     
-    TestGameBoard = SudokuGameBoard(None, test_board, test_board);TestGameBoard.update_unassigned()
+#     TestGameBoard = SudokuGameBoard(None, test_board, test_board);TestGameBoard.update_unassigned()
     
-    assert set(TestGameBoard.get_related_coords((0,0))) == set([(4, 0), (8, 0), (0, 2), (0, 5), (2, 2), (1, 0), (0, 8), (3, 0), (5, 0), (0, 1),
-                                                        (0, 7), (1, 2), (0, 4), (2, 1), (7, 0), (1, 1), (0, 3), (2, 0), (0, 6), (6, 0)])
-    assert set(TestGameBoard.get_related_coords((4,4))) == set([(4, 0), (3, 4), (4, 3), (5, 4), (4, 6), (7, 4), (4, 2), (4, 5), (3, 3), (4, 8),
-                                                        (5, 3), (2, 4), (0, 4), (6, 4), (4, 1), (4, 7), (3, 5), (5, 5), (8, 4), (1, 4)])
-    assert set(TestGameBoard.get_related_coords((2,8))) == set([(2, 2), (1, 6), (0, 8), (2, 5), (6, 8), (4, 8), (8, 8), (2, 4), (0, 7), (2, 1),
-                                                        (2, 7), (1, 8), (3, 8),(5, 8), (2, 0), (0, 6), (2, 3), (1, 7), (2, 6), (7, 8)])
-    print("All sample test cases for get_related_coords passed!")
+#     assert set(TestGameBoard.get_related_coords((0,0))) == set([(4, 0), (8, 0), (0, 2), (0, 5), (2, 2), (1, 0), (0, 8), (3, 0), (5, 0), (0, 1),
+#                                                         (0, 7), (1, 2), (0, 4), (2, 1), (7, 0), (1, 1), (0, 3), (2, 0), (0, 6), (6, 0)])
+#     assert set(TestGameBoard.get_related_coords((4,4))) == set([(4, 0), (3, 4), (4, 3), (5, 4), (4, 6), (7, 4), (4, 2), (4, 5), (3, 3), (4, 8),
+#                                                         (5, 3), (2, 4), (0, 4), (6, 4), (4, 1), (4, 7), (3, 5), (5, 5), (8, 4), (1, 4)])
+#     assert set(TestGameBoard.get_related_coords((2,8))) == set([(2, 2), (1, 6), (0, 8), (2, 5), (6, 8), (4, 8), (8, 8), (2, 4), (0, 7), (2, 1),
+#                                                         (2, 7), (1, 8), (3, 8),(5, 8), (2, 0), (0, 6), (2, 3), (1, 7), (2, 6), (7, 8)])
+#     print("All sample test cases for get_related_coords passed!")
     
-    assert TestGameBoard.fwd_checking() == True
-    assert TestGameBoard.coordinate_dict == {(0,0):[4], (1,0):[6], (2,0):[8], (5,0):[3], (8,0):[2]}
+#     assert TestGameBoard.fwd_checking() == True
+#     assert TestGameBoard.coordinate_dict == {(0,0):[4], (1,0):[6], (2,0):[8], (5,0):[3], (8,0):[2]}
     
-    TestGameBoard.coordinate_dict = {(1,1):[], (3,6):[1,5,8,9], (2,8):[1,4,5]}
-    assert TestGameBoard.fwd_checking() == False
-    TestGameBoard.coordinate_dict = {(1,1):[3], (8,1):[3], (2,8):[1,4,5]}
-    assert TestGameBoard.fwd_checking() == False
-    TestGameBoard.coordinate_dict = {(1,1):[2,4], (3,6):[1,5,8,9], (2,8):[2,4]}
-    assert TestGameBoard.fwd_checking() == True
+#     TestGameBoard.coordinate_dict = {(1,1):[], (3,6):[1,5,8,9], (2,8):[1,4,5]}
+#     assert TestGameBoard.fwd_checking() == False
+#     TestGameBoard.coordinate_dict = {(1,1):[3], (8,1):[3], (2,8):[1,4,5]}
+#     assert TestGameBoard.fwd_checking() == False
+#     TestGameBoard.coordinate_dict = {(1,1):[2,4], (3,6):[1,5,8,9], (2,8):[2,4]}
+#     assert TestGameBoard.fwd_checking() == True
     
-    TestGameBoard.coordinate_dict = {(1,1):[2], (1,6):[2,3,9], (2,6):[3]}
-    assert TestGameBoard.fwd_checking() == True
-    assert TestGameBoard.coordinate_dict == {(1, 1):[2], (1, 6):[9], (2, 6):[3]}
-    print("All sample test cases for forward_checking passed!")
+#     TestGameBoard.coordinate_dict = {(1,1):[2], (1,6):[2,3,9], (2,6):[3]}
+#     assert TestGameBoard.fwd_checking() == True
+#     assert TestGameBoard.coordinate_dict == {(1, 1):[2], (1, 6):[9], (2, 6):[3]}
+#     print("All sample test cases for forward_checking passed!")
 
 
 ############################################################
@@ -486,38 +487,38 @@ def MRV_heuristic(coordinate_dict:dict)->tuple:
 
 ### Sample Test Cases ###
 # Run the following assert statements below to test your function, all should run without raising an assertion error 
-if __name__ == "__main__":
-    assert MRV_heuristic({(1,1):[3,4,5], (3,6):[1,5,8,9]}) == (1,1)
-    test_coord_dict = {(1,1):[3,4,5], (3,6):[1,5,8,9], (2,8):[1,4,5]}
-    assert MRV_heuristic(test_coord_dict) == (1,1) or MRV_heuristic(test_coord_dict) == (2,8)
-    test_coord_dict={(0, 2): [8, 1, 4, 5],
-                     (0, 3): [8, 1, 5, 9],
-                     (0, 4): [8, 1, 4, 9],
-                     (0, 5): [9, 5],
-                     (0, 6): [1, 3, 4, 5, 6, 8, 9],
-                     (0, 7): [1, 4, 5, 6, 8],
-                     (0, 8): [1, 3, 5, 6, 8, 9],
-                     (1, 0): [8, 1, 4, 5],
-                     (1, 1): [1, 4, 5],
-                     (1, 4): [1, 2, 4, 7, 8],
-                     (1, 6): [1, 2, 4, 5, 8],
-                     (1, 7): [8, 1, 4, 5],
-                     (1, 8): [8, 1, 5],
-                     (2, 0): [1, 4, 5, 6, 8],
-                     (2, 2): [8, 1, 4, 5],
-                     (2, 3): [1, 2, 5, 8, 9],
-                     (2, 4): [1, 2, 4, 8, 9],
-                     (2, 6): [1, 2, 4, 5, 6, 8, 9],
-                     (2, 8): [1, 5, 6, 8, 9],
-                     (3, 0): [1, 4, 5, 7],
-                     (3, 2): [1, 2, 4, 5, 7],
-                     (3, 4): [1, 9, 7],
-                     (3, 5): [9, 5, 7],
-                     (3, 6): [1, 4, 5],
-                     (3, 8): [1, 5]}
+# if __name__ == "__main__":
+#     assert MRV_heuristic({(1,1):[3,4,5], (3,6):[1,5,8,9]}) == (1,1)
+#     test_coord_dict = {(1,1):[3,4,5], (3,6):[1,5,8,9], (2,8):[1,4,5]}
+#     assert MRV_heuristic(test_coord_dict) == (1,1) or MRV_heuristic(test_coord_dict) == (2,8)
+#     test_coord_dict={(0, 2): [8, 1, 4, 5],
+#                      (0, 3): [8, 1, 5, 9],
+#                      (0, 4): [8, 1, 4, 9],
+#                      (0, 5): [9, 5],
+#                      (0, 6): [1, 3, 4, 5, 6, 8, 9],
+#                      (0, 7): [1, 4, 5, 6, 8],
+#                      (0, 8): [1, 3, 5, 6, 8, 9],
+#                      (1, 0): [8, 1, 4, 5],
+#                      (1, 1): [1, 4, 5],
+#                      (1, 4): [1, 2, 4, 7, 8],
+#                      (1, 6): [1, 2, 4, 5, 8],
+#                      (1, 7): [8, 1, 4, 5],
+#                      (1, 8): [8, 1, 5],
+#                      (2, 0): [1, 4, 5, 6, 8],
+#                      (2, 2): [8, 1, 4, 5],
+#                      (2, 3): [1, 2, 5, 8, 9],
+#                      (2, 4): [1, 2, 4, 8, 9],
+#                      (2, 6): [1, 2, 4, 5, 6, 8, 9],
+#                      (2, 8): [1, 5, 6, 8, 9],
+#                      (3, 0): [1, 4, 5, 7],
+#                      (3, 2): [1, 2, 4, 5, 7],
+#                      (3, 4): [1, 9, 7],
+#                      (3, 5): [9, 5, 7],
+#                      (3, 6): [1, 4, 5],
+#                      (3, 8): [1, 5]}
     
-    assert MRV_heuristic(test_coord_dict) == (3, 8) or MRV_heuristic(test_coord_dict) == (0, 5)
-    print("All sample test cases for MRV_heuristic passed!")
+#     assert MRV_heuristic(test_coord_dict) == (3, 8) or MRV_heuristic(test_coord_dict) == (0, 5)
+#     print("All sample test cases for MRV_heuristic passed!")
     
 
 
@@ -561,23 +562,23 @@ def ODV_heuristic_bonus(coord:tuple, candidate_list:list, GameBoard:SudokuGameBo
 #################################################################
 # Run the following function calls below, if everything it working correctly, backtracking search will solve each of these boards and print out
 # the solution with colored entries where values have been assigned by the algorithm
-if __name__ == "__main__":
-    ##### Easy Test Cases #####
-    solve_board("Sudoku_Input_Easy1.csv")
-    solve_board("Sudoku_Input_Easy2.csv")
-    solve_board("Sudoku_Input_Easy3.csv")
-    solve_board("Sudoku_Input_Easy4.csv")
+# if __name__ == "__main__":
+#     ##### Easy Test Cases #####
+#     solve_board("Sudoku_Input_Easy1.csv")
+#     solve_board("Sudoku_Input_Easy2.csv")
+#     solve_board("Sudoku_Input_Easy3.csv")
+#     solve_board("Sudoku_Input_Easy4.csv")
     
-    ##### Medium Test Cases ####
-    solve_board("Sudoku_Input_Medium1.csv")
-    solve_board("Sudoku_Input_Medium2.csv")
-    solve_board("Sudoku_Input_Medium3.csv")
-    solve_board("Sudoku_Input_Medium4.csv")
+#     ##### Medium Test Cases ####
+#     solve_board("Sudoku_Input_Medium1.csv")
+#     solve_board("Sudoku_Input_Medium2.csv")
+#     solve_board("Sudoku_Input_Medium3.csv")
+#     solve_board("Sudoku_Input_Medium4.csv")
     
-    ##### Blank Board Test Case #####
-    blank_board = np.array([[0 for i in range(9)] for j in range(9)]);sudoku_game = SudokuGameBoard(None, blank_board, blank_board)
-    result, iterations, solved_board = BackTrackingSearch(sudoku_game, MRV_heuristic, ODV_heuristic_bonus, 0, True)
-    print("\nIterations:", iterations)
+#     ##### Blank Board Test Case #####
+#     blank_board = np.array([[0 for i in range(9)] for j in range(9)]);sudoku_game = SudokuGameBoard(None, blank_board, blank_board)
+#     result, iterations, solved_board = BackTrackingSearch(sudoku_game, MRV_heuristic, ODV_heuristic_bonus, 0, True)
+#     print("\nIterations:", iterations)
 
 
 
@@ -626,20 +627,54 @@ def solve_board_IP(input_filename, print_result=True):
 
 def Sudoku_Solver_IP(starting_board: np.array):
     """Function that returns a list of constraints, an objective function and a decision variable object given a starting Sudoku board"""
-    decision_variables = [cp.Variable((9,9),boolean=True) for i in range(9)] # Create a set of decision variables as a set of 9 grids
+    decision_variables = [cp.Variable((9, 9), boolean=True) for _ in range(9)] # Create a set of decision variables as a set of 9 grids
     # each of size 9x9. Each grid represents an array of bool variables indicating if in the cell (i,j) the kth integer is present e.g.
     # if decision_variables[4][2,3]==1 then the [2,3] entry of the regular 9x9 Sudoku board will contain a 5 since 4+1 = 5 and we index
     # starting at 0. The set of all [2,3] entries across all 9 of the 9x9 grids stored in the decision_variables list describes which
     # value is stored in the [2,3] cell of the regular 9x9 Sudoku board. 3d variable objects are not allowed in cvxpy
     # Hint: Use sometimes cvxpy can be a bit picky, try using inequalities instead of equality constraints if you run into errors
             
-    constraints=[] # A list to hold the constraints for this integer program
+    constraints = [] # A list to hold the constraints for this integer program
     
     #### YOUR CODE HERE ####
-    
+    # Constrain one number per square
+    for i in range(9):
+        for j in range(9):
+            constraints.append(cp.sum([decision_variables[k][i, j] for k in range(9)]) <= 1)
+
+    # Constrain rows
+    for k in range(9):
+        for i in range(9):
+            constraints.append(cp.sum([decision_variables[k][i, j] for j in range(9)]) <= 1)
+
+    # Constrain cols
+    for k in range(9):
+        for j in range(9):
+            constraints.append(cp.sum([decision_variables[k][i, j] for i in range(9)]) <= 1)
+
+    # Constrain blocks
+    def get_block_coords(a, b):
+        coords = []
+        for i in range(a * 3, a * 3 + 3):
+            for j in range(b * 3, b * 3 + 3):
+                coords.append((i, j))
+        return coords
+
+    for k in range(9):
+        for a in range(3):
+            for b in range(3):
+                constraints.append(cp.sum([decision_variables[k][i, j] for i, j in get_block_coords(a, b)]) <= 1)
+
+    # Constrain filled in squares
+    for i in range(9):
+        for j in range(9):
+            value = starting_board[i, j]
+            if value != 0:
+                constraints.append(decision_variables[value - 1][i, j] >= 1)
+
     # Create an objective function for this IP, set it to maximize the sum of all the binary decision variables 
-    
-    objective=1 #### YOUR CODE HERE #### Replace 1 with an actual objective
+    #### YOUR CODE HERE #### Replace 1 with an actual objective
+    objective = cp.Maximize(cp.sum([cp.sum(dv) for dv in decision_variables]))
     
     return (constraints, objective, decision_variables)
 
