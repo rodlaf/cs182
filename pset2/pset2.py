@@ -7,6 +7,7 @@ Due October 11, 2022 at 11:59pm
 ### Package Imports ###
 from operator import truediv
 from webbrowser import get
+from xmlrpc.client import boolean
 import numpy as np
 import random
 from termcolor import colored # You can install termcolor using "pip install termcolor" or "conda install termcolor"
@@ -681,52 +682,52 @@ def Sudoku_Solver_IP(starting_board: np.array):
 
 ### Sample Test Cases ###
 # Run the following assert statements below to test your function, all should run without raising an assertion error 
-if __name__ == "__main__":
-    solved_board1 = np.array([[4, 2, 7, 5, 3, 1, 8, 9, 6],
-                              [6, 9, 1, 2, 4, 8, 7, 5, 3],
-                              [8, 3, 5, 7, 9, 6, 2, 4, 1],
-                              [9, 5, 4, 6, 7, 3, 1, 2, 8],
-                              [1, 7, 6, 9, 8, 2, 4, 3, 5],
-                              [3, 8, 2, 1, 5, 4, 6, 7, 9],
-                              [7, 6, 9, 4, 1, 5, 3, 8, 2],
-                              [5, 1, 3, 8, 2, 7, 9, 6, 4],
-                              [2, 4, 8, 3, 6, 9, 5, 1, 7]])
+# if __name__ == "__main__":
+#     solved_board1 = np.array([[4, 2, 7, 5, 3, 1, 8, 9, 6],
+#                               [6, 9, 1, 2, 4, 8, 7, 5, 3],
+#                               [8, 3, 5, 7, 9, 6, 2, 4, 1],
+#                               [9, 5, 4, 6, 7, 3, 1, 2, 8],
+#                               [1, 7, 6, 9, 8, 2, 4, 3, 5],
+#                               [3, 8, 2, 1, 5, 4, 6, 7, 9],
+#                               [7, 6, 9, 4, 1, 5, 3, 8, 2],
+#                               [5, 1, 3, 8, 2, 7, 9, 6, 4],
+#                               [2, 4, 8, 3, 6, 9, 5, 1, 7]])
     
-    solved_board2 = np.array([[6, 3, 7, 2, 4, 1, 9, 5, 8],
-                              [5, 4, 9, 3, 6, 8, 7, 1, 2],
-                              [2, 1, 8, 5, 9, 7, 3, 6, 4],
-                              [8, 6, 3, 7, 2, 5, 1, 4, 9],
-                              [4, 2, 1, 9, 8, 6, 5, 3, 7],
-                              [9, 7, 5, 1, 3, 4, 2, 8, 6],
-                              [7, 8, 2, 6, 1, 3, 4, 9, 5],
-                              [3, 9, 6, 4, 5, 2, 8, 7, 1],
-                              [1, 5, 4, 8, 7, 9, 6, 2, 3]])
+#     solved_board2 = np.array([[6, 3, 7, 2, 4, 1, 9, 5, 8],
+#                               [5, 4, 9, 3, 6, 8, 7, 1, 2],
+#                               [2, 1, 8, 5, 9, 7, 3, 6, 4],
+#                               [8, 6, 3, 7, 2, 5, 1, 4, 9],
+#                               [4, 2, 1, 9, 8, 6, 5, 3, 7],
+#                               [9, 7, 5, 1, 3, 4, 2, 8, 6],
+#                               [7, 8, 2, 6, 1, 3, 4, 9, 5],
+#                               [3, 9, 6, 4, 5, 2, 8, 7, 1],
+#                               [1, 5, 4, 8, 7, 9, 6, 2, 3]])
     
-    solved_board3 = np.array([[6, 2, 1, 3, 4, 9, 5, 8, 7],
-                              [5, 4, 7, 8, 2, 1, 3, 6, 9],
-                              [9, 3, 8, 6, 7, 5, 1, 4, 2],
-                              [1, 8, 9, 2, 3, 6, 7, 5, 4],
-                              [3, 5, 4, 1, 8, 7, 9, 2, 6],
-                              [2, 7, 6, 9, 5, 4, 8, 1, 3],
-                              [8, 9, 5, 4, 6, 3, 2, 7, 1],
-                              [7, 6, 3, 5, 1, 2, 4, 9, 8],
-                              [4, 1, 2, 7, 9, 8, 6, 3, 5]])
+#     solved_board3 = np.array([[6, 2, 1, 3, 4, 9, 5, 8, 7],
+#                               [5, 4, 7, 8, 2, 1, 3, 6, 9],
+#                               [9, 3, 8, 6, 7, 5, 1, 4, 2],
+#                               [1, 8, 9, 2, 3, 6, 7, 5, 4],
+#                               [3, 5, 4, 1, 8, 7, 9, 2, 6],
+#                               [2, 7, 6, 9, 5, 4, 8, 1, 3],
+#                               [8, 9, 5, 4, 6, 3, 2, 7, 1],
+#                               [7, 6, 3, 5, 1, 2, 4, 9, 8],
+#                               [4, 1, 2, 7, 9, 8, 6, 3, 5]])
     
-    solved_board4 = np.array([[1, 2, 8, 7, 4, 6, 3, 5, 9],
-                              [9, 7, 3, 1, 5, 2, 4, 6, 8],
-                              [5, 4, 6, 8, 9, 3, 2, 1, 7],
-                              [7, 9, 2, 5, 6, 8, 1, 3, 4],
-                              [3, 6, 1, 2, 7, 4, 9, 8, 5],
-                              [8, 5, 4, 9, 3, 1, 6, 7, 2],
-                              [2, 1, 7, 3, 8, 9, 5, 4, 6],
-                              [6, 3, 5, 4, 2, 7, 8, 9, 1],
-                              [4, 8, 9, 6, 1, 5, 7, 2, 3]])
+#     solved_board4 = np.array([[1, 2, 8, 7, 4, 6, 3, 5, 9],
+#                               [9, 7, 3, 1, 5, 2, 4, 6, 8],
+#                               [5, 4, 6, 8, 9, 3, 2, 1, 7],
+#                               [7, 9, 2, 5, 6, 8, 1, 3, 4],
+#                               [3, 6, 1, 2, 7, 4, 9, 8, 5],
+#                               [8, 5, 4, 9, 3, 1, 6, 7, 2],
+#                               [2, 1, 7, 3, 8, 9, 5, 4, 6],
+#                               [6, 3, 5, 4, 2, 7, 8, 9, 1],
+#                               [4, 8, 9, 6, 1, 5, 7, 2, 3]])
     
-    assert (solved_board1 == solve_board_IP("Sudoku_Input_Easy1.csv")).all()
-    assert (solved_board2 == solve_board_IP("Sudoku_Input_Easy2.csv")).all()
-    assert (solved_board3 == solve_board_IP("Sudoku_Input_Medium3.csv")).all()
-    assert (solved_board4 == solve_board_IP("Sudoku_Input_Medium4.csv")).all()
-    print("\nAll sample test cases for solve_board_IP passed!")
+#     assert (solved_board1 == solve_board_IP("Sudoku_Input_Easy1.csv")).all()
+#     assert (solved_board2 == solve_board_IP("Sudoku_Input_Easy2.csv")).all()
+#     assert (solved_board3 == solve_board_IP("Sudoku_Input_Medium3.csv")).all()
+#     assert (solved_board4 == solve_board_IP("Sudoku_Input_Medium4.csv")).all()
+#     print("\nAll sample test cases for solve_board_IP passed!")
 
 
 ####                    ####
@@ -735,23 +736,23 @@ if __name__ == "__main__":
 
 # Instructions: Compare the runtime of the backtracking-based solver vs the IP-based solver using the following test cases. Which one is faster? Include
 # the approximate runtime of your 2 Sudoku solvers in your PDF solutions write up. (Looking for approximate values and the appropriate comparsion between them)
-if __name__ == "__main__":
-    test_cases = ["Sudoku_Input_Easy1.csv","Sudoku_Input_Easy2.csv","Sudoku_Input_Easy3.csv","Sudoku_Input_Easy4.csv",
-                  "Sudoku_Input_Medium1.csv","Sudoku_Input_Medium2.csv","Sudoku_Input_Medium3.csv","Sudoku_Input_Medium4.csv"]
+# if __name__ == "__main__":
+#     test_cases = ["Sudoku_Input_Easy1.csv","Sudoku_Input_Easy2.csv","Sudoku_Input_Easy3.csv","Sudoku_Input_Easy4.csv",
+#                   "Sudoku_Input_Medium1.csv","Sudoku_Input_Medium2.csv","Sudoku_Input_Medium3.csv","Sudoku_Input_Medium4.csv"]
     
-    # Back-tracking Search based appraoch
-    start_time_IP = time.time()
-    for test_case in test_cases:
-        solved_board = solve_board(test_case,print_result = False)
-    end_time_IP = time.time()
-    print("Runtime of Backtracking Search-based Sudoku Solver:",end_time_IP-start_time_IP)
+#     # Back-tracking Search based appraoch
+#     start_time_IP = time.time()
+#     for test_case in test_cases:
+#         solved_board = solve_board(test_case,print_result = False)
+#     end_time_IP = time.time()
+#     print("Runtime of Backtracking Search-based Sudoku Solver:",end_time_IP-start_time_IP)
     
-    # Integer Programming-based Search based appraoch
-    start_time_IP = time.time()
-    for test_case in test_cases:
-        solved_board = solve_board_IP(test_case,print_result = False)
-    end_time_IP = time.time()
-    print("Runtime of IP-based Sudoku Solver:",end_time_IP-start_time_IP)
+#     # Integer Programming-based Search based appraoch
+#     start_time_IP = time.time()
+#     for test_case in test_cases:
+#         solved_board = solve_board_IP(test_case,print_result = False)
+#     end_time_IP = time.time()
+#     print("Runtime of IP-based Sudoku Solver:",end_time_IP-start_time_IP)
     
 
 ##########################################
@@ -767,12 +768,31 @@ if __name__ == "__main__":
 
 # Do not use any additional external libraries not already imported above.    
 
-def Min_Makespan_Solver(task_times:list, K:int)->tuple:
+def Min_Makespan_Solver(task_times: list, K: int)->tuple:
     """Function that returns the objective function value (i.e. the makespan) and an optimal assignment of tasks to machines for an input 
     min makespan problem, solves using integer programming"""
     
     #### YOUR CODE HERE ####
-    pass
+    decision_variable = cp.Variable((len(task_times), K), boolean=True)
+
+    constraints = []
+
+    # Tasks can be assigned to only one machine
+    for t in range(len(task_times)):
+        constraints.append(sum([decision_variable[t, k] for k in range(K)]) == 1)
+
+    # Minimize maximum makespan across possible machine assignments
+    objective = cp.Minimize(
+        cp.maximum(
+            *[sum([decision_variable[t, k] * task_times[t] for t in range(len(task_times))]) for k in range(K)]
+        )
+    )
+
+    IP_obj = cp.Problem(objective, constraints) 
+
+    maximum_makespan = IP_obj.solve(solver=cp.GLPK_MI, verbose=False)
+
+    return (maximum_makespan, decision_variable.value)
 
 
 ### Sample Test Cases ###
