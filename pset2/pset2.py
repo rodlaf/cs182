@@ -6,6 +6,7 @@ Due October 11, 2022 at 11:59pm
 
 ### Package Imports ###
 from operator import truediv
+from sys import intern
 from webbrowser import get
 from xmlrpc.client import boolean
 import numpy as np
@@ -545,41 +546,51 @@ def MRV_heuristic(coordinate_dict:dict)->tuple:
 # Example: coord = (5, 1) and candidate_list = [], then return None
 
 ### Bonus Question ###
-def ODV_heuristic_bonus(coord:tuple, candidate_list:list, GameBoard:SudokuGameBoard)->Tuple[int, None]:
+def ODV_heuristic_bonus(coord: tuple, candidate_list: list, GameBoard: SudokuGameBoard) -> Tuple[int, None]:
     """For a given unassigned variable candidate list, make a selection of which value should be assigned next. If candidate_list is empty, return None"""
-    
+
     #### YOUR CODE HERE ####
-    # Replace the code below with your own
-    if len(candidate_list)>0:
-        return random.choice(candidate_list) # Use random selection among the choices present as the default if no heuristic provided
+    def occurences_in_candidates_of_related_coords_where_known(n: int) -> int:
+        values_in_coordinate_dict = []
+        for dict_coord in GameBoard.coordinate_dict.keys():
+            if dict_coord in GameBoard.get_related_coords(coord):
+                values_in_coordinate_dict += GameBoard.coordinate_dict[coord]
+        freqs = np.bincount(values_in_coordinate_dict)
+        if n + 1 > len(freqs):
+            return 0
+        else: 
+            return freqs[n]
+
+    if len(candidate_list) > 0:
+        next_val = min(candidate_list, key=lambda n: occurences_in_candidates_of_related_coords_where_known(n))
+        return next_val
     else:
         return None
-    
-    #### YOUR CODE HERE ####
-     
+
+         
 
 #################################################################
 # Sample Test Cases for the Overall Backtracking Search Program #
 #################################################################
 # Run the following function calls below, if everything it working correctly, backtracking search will solve each of these boards and print out
 # the solution with colored entries where values have been assigned by the algorithm
-# if __name__ == "__main__":
-#     ##### Easy Test Cases #####
-#     solve_board("Sudoku_Input_Easy1.csv")
-#     solve_board("Sudoku_Input_Easy2.csv")
-#     solve_board("Sudoku_Input_Easy3.csv")
-#     solve_board("Sudoku_Input_Easy4.csv")
+if __name__ == "__main__":
+    ##### Easy Test Cases #####
+    solve_board("Sudoku_Input_Easy1.csv")
+    solve_board("Sudoku_Input_Easy2.csv")
+    solve_board("Sudoku_Input_Easy3.csv")
+    solve_board("Sudoku_Input_Easy4.csv")
     
-#     ##### Medium Test Cases ####
-#     solve_board("Sudoku_Input_Medium1.csv")
-#     solve_board("Sudoku_Input_Medium2.csv")
-#     solve_board("Sudoku_Input_Medium3.csv")
-#     solve_board("Sudoku_Input_Medium4.csv")
+    ##### Medium Test Cases ####
+    solve_board("Sudoku_Input_Medium1.csv")
+    solve_board("Sudoku_Input_Medium2.csv")
+    solve_board("Sudoku_Input_Medium3.csv")
+    solve_board("Sudoku_Input_Medium4.csv")
     
-#     ##### Blank Board Test Case #####
-#     blank_board = np.array([[0 for i in range(9)] for j in range(9)]);sudoku_game = SudokuGameBoard(None, blank_board, blank_board)
-#     result, iterations, solved_board = BackTrackingSearch(sudoku_game, MRV_heuristic, ODV_heuristic_bonus, 0, True)
-#     print("\nIterations:", iterations)
+    ##### Blank Board Test Case #####
+    blank_board = np.array([[0 for i in range(9)] for j in range(9)]);sudoku_game = SudokuGameBoard(None, blank_board, blank_board)
+    result, iterations, solved_board = BackTrackingSearch(sudoku_game, MRV_heuristic, ODV_heuristic_bonus, 0, True)
+    print("\nIterations:", iterations)
 
 
 
