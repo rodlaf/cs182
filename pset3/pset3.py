@@ -248,7 +248,53 @@ class OptimizedAgainstRandomAgent(MultiAgentSearchAgent):
     """
     def get_action(self, game_state: GameState) -> Action:
         """*** YOUR CODE HERE ***"""
-        raise NotImplementedError
+        if self.index == 1:
+            _, action = self.max_val(game_state)
+            return action
+        else:
+            _, action = self.min_val(game_state)
+            return action
+
+    def min_val(self, game_state: GameState) -> Tuple[float, Optional[Action]]:
+        min_value = float('inf')
+        min_action = None
+
+        if game_state.is_terminal():
+            return game_state.value(), None
+        else:
+            for action in game_state.get_actions():
+                min_value = min(min_value, self.average_min_val(game_state.generate_successor(action)))
+                min_action = action
+
+        return min_value, min_action
+
+    def average_min_val(self, game_state: GameState) -> float:
+        if game_state.is_terminal():
+            return game_state.value()
+        else:
+            actions = game_state.get_actions()
+            return sum([self.min_val(game_state.generate_successor(action))[0] for action in actions]) / len(actions)
+
+    def max_val(self, game_state: GameState) -> Tuple[float, Optional[Action]]:
+        max_value = float('-inf')
+        max_action = None
+
+        if game_state.is_terminal():
+            return game_state.value(), None
+        else:
+            for action in game_state.get_actions():
+                max_value = max(max_value, self.average_max_val(game_state.generate_successor(action))[0])
+                max_action = action
+
+        return max_value, max_action
+
+    def average_max_val(self, game_state: GameState) -> float:
+        if game_state.is_terminal():
+            return game_state.value()
+        else:
+            actions = game_state.get_actions()
+            return sum([self.max_val(game_state.generate_successor(action))[0] for action in actions]) / len(actions)
+
 
 
 def play_game(
@@ -302,4 +348,10 @@ def simulate_versus_random(dictionary: GhostDictionary, prefix: str, k: int = 10
 if __name__ == "__main__":
     dictionary = GhostDictionary("dictionary.txt")
     prefix = "enf"
-    play_game(dictionary, prefix, 0, AlphaBetaAgent, AlphaBetaAgent)
+    # play_game(dictionary, prefix, 0, OptimizedAgainstRandomAgent, RandomAgent)
+
+    print(simulate_versus_random(dictionary, 'beh'))
+    print(simulate_versus_random(dictionary, 'feb'))
+    print(simulate_versus_random(dictionary, 'gw'))
+
+
