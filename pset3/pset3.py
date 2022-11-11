@@ -193,15 +193,45 @@ class MinimaxAgent(MultiAgentSearchAgent):
 class AlphaBetaAgent(MultiAgentSearchAgent):
     def get_action(self, game_state: GameState):
         """*** YOUR CODE HERE ***"""
-        raise NotImplementedError
+        if self.index == 1:
+            _, action = self.max_val(game_state, alpha=float('-inf'), beta=float('inf'))
+            return action
+        else:
+            _, action = self.min_val(game_state, alpha=float('-inf'), beta=float('inf'))
+            return action
 
     def max_val(self, game_state: GameState, alpha: float, beta: float) -> Tuple[float, Optional[Action]]:
         """*** YOUR CODE HERE ***"""
-        raise NotImplementedError
+        max_value = alpha
+        max_action = None
+
+        if game_state.is_terminal():
+            return game_state.value(), None
+        else:
+            for action in game_state.get_actions():
+                max_value = max(max_value, self.min_val(game_state.generate_successor(action), alpha=max_value, beta=beta)[0])
+                max_action = action
+                if max_value >= beta:
+                    return max_value, max_action
+        
+        return max_value, max_action
+
 
     def min_val(self, game_state: GameState, alpha: float, beta: float) -> Tuple[float, Optional[Action]]:
         """*** YOUR CODE HERE ***"""
-        raise NotImplementedError
+        min_value = beta
+        min_action = None
+
+        if game_state.is_terminal():
+            return game_state.value(), None
+        else:
+            for action in game_state.get_actions():
+                min_value = min(min_value, self.max_val(game_state.generate_successor(action), alpha=alpha, beta=min_value)[0])
+                min_action = action
+                if min_value <= alpha:
+                    return min_value, min_action
+        
+        return min_value, min_action
 
 
 class RandomAgent(MultiAgentSearchAgent):
@@ -272,4 +302,4 @@ def simulate_versus_random(dictionary: GhostDictionary, prefix: str, k: int = 10
 if __name__ == "__main__":
     dictionary = GhostDictionary("dictionary.txt")
     prefix = "enf"
-    play_game(dictionary, prefix, 0, MinimaxAgent, MinimaxAgent)
+    play_game(dictionary, prefix, 0, AlphaBetaAgent, AlphaBetaAgent)
