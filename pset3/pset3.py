@@ -140,7 +140,7 @@ class MultiAgentSearchAgent(abc.ABC):
 class MinimaxAgent(MultiAgentSearchAgent):
     def get_action(self, game_state: GameState) -> Action:
         """*** YOUR CODE HERE ***"""
-        if self.index == 1:
+        if self.index == 0:
             _, action = self.max_val(game_state)
             return action
         else:
@@ -157,16 +157,18 @@ class MinimaxAgent(MultiAgentSearchAgent):
         """
         """*** YOUR CODE HERE ***"""
         max_value = float('-inf')
-        max_action = None
+        best_action = None
 
         if game_state.is_terminal():
             return game_state.value(), None
         else:
             for action in game_state.get_actions():
-                max_value = max(max_value, self.min_val(game_state.generate_successor(action))[0])
-                max_action = action
+                new_value = self.min_val(game_state.generate_successor(action))[0]
+                if new_value > max_value:
+                    max_value = new_value
+                    best_action = action
 
-        return max_value, max_action
+        return max_value, best_action
 
 
     def min_val(self, game_state: GameState) -> Tuple[float, Optional[Action]]:
@@ -178,22 +180,24 @@ class MinimaxAgent(MultiAgentSearchAgent):
         """
         """*** YOUR CODE HERE ***"""
         min_value = float('inf')
-        min_action = None
+        best_action = None
 
         if game_state.is_terminal():
             return game_state.value(), None
         else:
             for action in game_state.get_actions():
-                min_value = min(min_value, self.max_val(game_state.generate_successor(action))[0])
-                min_action = action
+                new_value = self.max_val(game_state.generate_successor(action))[0]
+                if new_value < min_value:
+                    min_value = new_value
+                    best_action = action
 
-        return min_value, min_action
+        return min_value, best_action
 
 
 class AlphaBetaAgent(MultiAgentSearchAgent):
     def get_action(self, game_state: GameState):
         """*** YOUR CODE HERE ***"""
-        if self.index == 1:
+        if self.index == 0:
             _, action = self.max_val(game_state, alpha=float('-inf'), beta=float('inf'))
             return action
         else:
@@ -209,11 +213,14 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
             return game_state.value(), None
         else:
             for action in game_state.get_actions():
-                max_value = max(max_value, self.min_val(game_state.generate_successor(action), alpha=max_value, beta=beta)[0])
-                max_action = action
+                new_value, _ = self.min_val(game_state.generate_successor(action), alpha=max_value, beta=beta)
+                if new_value > max_value:
+                    max_value = new_value
+                    max_action = action
+
                 if max_value >= beta:
-                    return max_value, max_action
-        
+                    break
+    
         return max_value, max_action
 
 
@@ -226,10 +233,13 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
             return game_state.value(), None
         else:
             for action in game_state.get_actions():
-                min_value = min(min_value, self.max_val(game_state.generate_successor(action), alpha=alpha, beta=min_value)[0])
-                min_action = action
+                new_value, _ = self.max_val(game_state.generate_successor(action), alpha=alpha, beta=min_value)
+                if new_value < min_value:
+                    min_value = new_value
+                    min_action = action
+
                 if min_value <= alpha:
-                    return min_value, min_action
+                    break
         
         return min_value, min_action
 
@@ -248,25 +258,12 @@ class OptimizedAgainstRandomAgent(MultiAgentSearchAgent):
     """
     def get_action(self, game_state: GameState) -> Action:
         """*** YOUR CODE HERE ***"""
-        if self.index == 1:
+        if self.index == 0:
             _, action = self.max_val(game_state)
             return action
         else:
             _, action = self.min_val(game_state)
             return action
-
-    def min_val(self, game_state: GameState) -> Tuple[float, Optional[Action]]:
-        min_value = float('inf')
-        min_action = None
-
-        if game_state.is_terminal():
-            return game_state.value(), None
-        else:
-            for action in game_state.get_actions():
-                min_value = min(min_value, self.average_min_val(game_state.generate_successor(action)))
-                min_action = action
-
-        return min_value, min_action
 
     def average_min_val(self, game_state: GameState) -> float:
         if game_state.is_terminal():
@@ -277,16 +274,35 @@ class OptimizedAgainstRandomAgent(MultiAgentSearchAgent):
 
     def max_val(self, game_state: GameState) -> Tuple[float, Optional[Action]]:
         max_value = float('-inf')
-        max_action = None
+        best_action = None
 
         if game_state.is_terminal():
             return game_state.value(), None
         else:
             for action in game_state.get_actions():
-                max_value = max(max_value, self.average_max_val(game_state.generate_successor(action))[0])
-                max_action = action
+                new_value = self.average_max_val(game_state.generate_successor(action))
+                if new_value > max_value:
+                    max_value = new_value
+                    best_action = action
 
-        return max_value, max_action
+        return max_value, best_action
+
+
+    def min_val(self, game_state: GameState) -> Tuple[float, Optional[Action]]:
+        min_value = float('inf')
+        best_action = None
+
+        if game_state.is_terminal():
+            return game_state.value(), None
+        else:
+            for action in game_state.get_actions():
+                new_value = self.average_min_val(game_state.generate_successor(action))
+                if new_value < min_value:
+                    min_value = new_value
+                    best_action = action
+
+        return min_value, best_action
+
 
     def average_max_val(self, game_state: GameState) -> float:
         if game_state.is_terminal():
@@ -348,7 +364,10 @@ def simulate_versus_random(dictionary: GhostDictionary, prefix: str, k: int = 10
 if __name__ == "__main__":
     dictionary = GhostDictionary("dictionary.txt")
     prefix = "enf"
-    # play_game(dictionary, prefix, 0, OptimizedAgainstRandomAgent, RandomAgent)
+    # play_game(dictionary, prefix, 0, MinimaxAgent, MinimaxAgent)
+
+    # play_game(dictionary, prefix, 0, AlphaBetaAgent, AlphaBetaAgent)
+
 
     print(simulate_versus_random(dictionary, 'beh'))
     print(simulate_versus_random(dictionary, 'feb'))
