@@ -270,7 +270,11 @@ class QLearning:
         ##########################
         ##### YOUR CODE HERE #####
         ##########################
-        raise NotImplementedError
+        if np.random.uniform() < self.epsilon or np.all(self.Q[state] == self.Q[state][0]):
+            return np.random.randint(0, self.num_actions)
+        else:  
+            return np.argmax(self.Q[state])
+
 
     def q_learning(self, num_episodes=10000, interval=1000, display=False, step_limit=10000):
         """
@@ -306,7 +310,7 @@ class QLearning:
                 ##########################
                 ##### YOUR CODE HERE #####
                 ##########################
-                raise NotImplementedError
+                self.state_action_counter[curr_state][action] += 1
                 
                 # update Q values. Use the alpha schedule given here. k_SA = how many time we took action A at state S
                 alpha = min(0.1, 10 / self.state_action_counter[curr_state][action] ** 0.8)
@@ -315,7 +319,7 @@ class QLearning:
                 ##########################
                 ##### YOUR CODE HERE #####
                 ##########################
-                raise NotImplementedError
+                self.Q[curr_state][action] = (1 - alpha) * self.Q[curr_state][action] + alpha * (reward + self.gamma * np.max(self.Q[next_state]))
                 
                 num_steps += 1
                 curr_state = next_state
@@ -325,6 +329,7 @@ class QLearning:
                 print(str(e)+"/"+str(num_episodes),end=" ")
                 mean, var, best = self.compute_episode_rewards(num_episodes=100)
                 mean_returns.append(mean)
+        # print(self.Q)
 
         return mean_returns
 
@@ -359,31 +364,31 @@ class QLearning:
 if __name__ == "__main__":
     
     ### Part 3 - Value Iteration ###
-    env = gym.make("FrozenLake-v1", map_name="4x4", is_slippery=True) # Set up the Frozen lake environmnet 
-    env.reset()
+    # env = gym.make("FrozenLake-v1", map_name="4x4", is_slippery=True) # Set up the Frozen lake environmnet 
+    # env.reset()
 
-    print("Testing Value Iteration...")
-    # sleep(1)
-    my_policy = DynamicProgramming(env, gamma=0.9, epsilon=0.001) # Instantiate class object
-    my_policy.value_iteration() # Iterate to derive the final policy
-    # my_policy.play_game() # Play through one episode of the game under the current policy
-    # my_policy.print_rewards_info() # Prints information from compute_episode_rewards
-    # sleep(1)
+    # print("Testing Value Iteration...")
+    # # sleep(1)
+    # my_policy = DynamicProgramming(env, gamma=0.9, epsilon=0.001) # Instantiate class object
+    # my_policy.value_iteration() # Iterate to derive the final policy
+    # # my_policy.play_game() # Play through one episode of the game under the current policy
+    # # my_policy.print_rewards_info() # Prints information from compute_episode_rewards
+    # # sleep(1)
 
-    # Compute the episode rewards over 1000 episodes of game playing
-    mean_val, var_val, max_val, num_steps_array =  my_policy.compute_episode_rewards(num_episodes=1000, step_limit=1000)
-    print(f"Mean of Episode Rewards: {mean_val:.2f}, Variance of Episode Rewards: {var_val:.2f}, Best Episode Reward: {max_val}")
+    # # Compute the episode rewards over 1000 episodes of game playing
+    # mean_val, var_val, max_val, num_steps_array =  my_policy.compute_episode_rewards(num_episodes=1000, step_limit=1000)
+    # print(f"Mean of Episode Rewards: {mean_val:.2f}, Variance of Episode Rewards: {var_val:.2f}, Best Episode Reward: {max_val}")
     
     import matplotlib.pyplot as plt
     
-    ##########################
-    ##### YOUR CODE HERE #####
-    ##########################
-    plt.hist(num_steps_array, bins=100)
-    plt.title('Steps to Goal')
-    plt.xlabel('Steps')
-    plt.ylabel('Count')
-    plt.savefig('2_3')
+    # ##########################
+    # ##### YOUR CODE HERE #####
+    # ##########################
+    # plt.hist(num_steps_array, bins=100)
+    # plt.title('Steps to Goal')
+    # plt.xlabel('Steps')
+    # plt.ylabel('Count')
+    # plt.savefig('2_3')
     
     
     ### Part 4 - Model Free Q-Learning ###
@@ -393,7 +398,8 @@ if __name__ == "__main__":
     print("Testing Q-Learning...")
     sleep(1)
     my_policy = QLearning(env, gamma=0.9, epsilon=0.01) # Instanciate a new class object with the Q learning methods
-    
+    my_policy.q_learning()
+        
     ### Part 5 ###
     
     # Plot the mean returns over 100 episodes of the Q-learning agent that acts solely based on max-Q values after 
@@ -404,7 +410,15 @@ if __name__ == "__main__":
     ##########################
     ##### YOUR CODE HERE #####
     ##########################
-    raise NotImplementedError
+
+    # means = np.zeros(100)
+    # for i in range(100):
+    #     mean, var, best = my_policy.compute_episode_rewards(num_episodes=100, step_limit=1000)
+    #     means[i] = mean
+    
+    # plt.plot(means)
+    # plt.savefig('2_5')
+
 
 
 
