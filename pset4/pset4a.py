@@ -329,7 +329,6 @@ class QLearning:
                 print(str(e)+"/"+str(num_episodes),end=" ")
                 mean, var, best = self.compute_episode_rewards(num_episodes=100)
                 mean_returns.append(mean)
-        # print(self.Q)
 
         return mean_returns
 
@@ -361,7 +360,7 @@ class QLearning:
         return mean, var, best
 
 
-if __name__ == "__main__":
+# if __name__ == "__main__":
     
     ### Part 3 - Value Iteration ###
     # env = gym.make("FrozenLake-v1", map_name="4x4", is_slippery=True) # Set up the Frozen lake environmnet 
@@ -379,7 +378,7 @@ if __name__ == "__main__":
     # mean_val, var_val, max_val, num_steps_array =  my_policy.compute_episode_rewards(num_episodes=1000, step_limit=1000)
     # print(f"Mean of Episode Rewards: {mean_val:.2f}, Variance of Episode Rewards: {var_val:.2f}, Best Episode Reward: {max_val}")
     
-    import matplotlib.pyplot as plt
+    # import matplotlib.pyplot as plt
     
     # ##########################
     # ##### YOUR CODE HERE #####
@@ -392,34 +391,29 @@ if __name__ == "__main__":
     
     
     ### Part 4 - Model Free Q-Learning ###
-    env = gym.make("FrozenLake-v1", map_name="4x4", is_slippery=True)
-    env.reset()
+    # env = gym.make("FrozenLake-v1", map_name="4x4", is_slippery=True)
+    # env.reset()
 
-    print("Testing Q-Learning...")
-    sleep(1)
-    my_policy = QLearning(env, gamma=0.9, epsilon=0.01) # Instanciate a new class object with the Q learning methods
-    my_policy.q_learning()
+    # print("Testing Q-Learning...")
+    # sleep(1)
+    # my_policy = QLearning(env, gamma=0.9, epsilon=0.01) # Instanciate a new class object with the Q learning methods
         
-    ### Part 5 ###
+    # ### Part 5 ###
     
-    # Plot the mean returns over 100 episodes of the Q-learning agent that acts solely based on max-Q values after 
-    # every 1000 episodes (this should be done by using the compute_episode_rewards function). Use the parameters 
-    # gamma=0.9, epsilon=0.01. How does your Q-learning agent compare to the value-iteration agent following the 
-    # policy derived from part 3?
+    # # Plot the mean returns over 100 episodes of the Q-learning agent that acts solely based on max-Q values after 
+    # # every 1000 episodes (this should be done by using the compute_episode_rewards function). Use the parameters 
+    # # gamma=0.9, epsilon=0.01. How does your Q-learning agent compare to the value-iteration agent following the 
+    # # policy derived from part 3?
     
-    ##########################
-    ##### YOUR CODE HERE #####
-    ##########################
-
-    # means = np.zeros(100)
-    # for i in range(100):
-    #     mean, var, best = my_policy.compute_episode_rewards(num_episodes=100, step_limit=1000)
-    #     means[i] = mean
-    
-    # plt.plot(means)
+    # ##########################
+    # ##### YOUR CODE HERE #####
+    # ##########################
+    # mean_returns = my_policy.q_learning(num_episodes=100000, interval=1000)
+    # plt.plot(mean_returns)
+    # plt.title('Mean Returns Over 100 Episodes for Q Learning \n After 100 Intervals of 1000 Updates')
+    # plt.xlabel('Interval')
+    # plt.ylabel('Mean Return')
     # plt.savefig('2_5')
-
-
 
 
 #####################################
@@ -466,8 +460,24 @@ if __name__ == "__main__":
     ##########################
     #### YOUR CODE HERE ####
     ##########################
-    
+    plt.scatter(X.loc[:, 'petal_length'], X.loc[:, 'petal_width'], c=y)
+    plt.xlabel('Petal Length')
+    plt.ylabel('Petal Width')
+
+    clf = LogisticRegression(penalty='none').fit(X, y)
+
+    axes = plt.gca()
+    boundary_x_1_vals = np.array(axes.get_xlim())
+    boundary_x_2_vals = - (boundary_x_1_vals * clf.coef_[0][0] + clf.intercept_) / clf.coef_[0][1]
+    plt.plot(boundary_x_1_vals, boundary_x_2_vals, '-')
+
+    plt.title('Logistic Regression on Iris Dataset')
+    plt.savefig('4_1')
+
     # Part B: What are the estimated coefficients and intercept? (include this in your PDF)
+    print('coefs: ' + str(clf.coef_[0]) + ', intercept: ' + str(clf.intercept_))
+    print('mean accuracy: %f' % clf.score(X, y))
+    print('baseline accuracy for picking majority class: 0.5')
     
     ##########################
     #### YOUR CODE HERE ####
