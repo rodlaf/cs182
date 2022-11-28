@@ -117,18 +117,14 @@ class DynamicProgramming:
         ##########################
         ##### YOUR CODE HERE #####
         ##########################
-        new_V = np.zeros(self.num_states)
+        Z = np.zeros(self.num_actions)
 
-        for state in range(self.num_states):
-            state_value = 0
-            for action in range(self.num_actions):
-                for i in range(len(self.env.P[state][action])):
-                    prob, next_state, reward, done = self.env.P[state][action][i]
-                    state_value += prob * reward
-            new_V[state] = state_value
+        for action in range(self.num_actions):
+            for i in range(len(self.P[state][action])):
+                prob, next_state, reward, done = self.P[state][action][i]
+                Z[action] += prob * self.V[next_state]
 
-        print(new_V)
-        return new_V
+        return Z
     
 
     def value_iteration(self):
@@ -141,8 +137,27 @@ class DynamicProgramming:
         ##########################
         ##### YOUR CODE HERE #####
         ##########################
-        self.updated_action_values(1)
 
+        # Compute values
+        while True:
+            new_V = np.zeros(self.num_states)
+
+            for state in range(self.num_states):
+                new_V[state] = self.rewards[state] + self.gamma * np.max(self.updated_action_values(state))
+
+            if max([abs(new_V[i] - self.V[i]) for i in range(self.num_states)]) < self.epsilon * (1 - self.gamma) / self.gamma:
+                break
+
+            self.V = new_V
+        print(self.V)
+
+        # Extract optimal policy
+        for state in range(self.num_states):
+            self.policy[state] = np.argmax(self.updated_action_values(state))
+
+        print(self.policy)
+
+            
     def play_game(self, display=False):
         '''
         Play through one episode of the game under the current policy
