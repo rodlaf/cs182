@@ -119,12 +119,15 @@ class DynamicProgramming:
         ##########################
         Z = np.zeros(self.num_actions)
 
-        for action in range(self.num_actions):
-            for i in range(len(self.P[state][action])):
-                prob, next_state, reward, done = self.P[state][action][i]
-                Z[action] += prob * self.V[next_state]
+        if self.terminal_states[state]:
+            return Z
+        else:
+            for action in range(self.num_actions):
+                for i in range(len(self.P[state][action])):
+                    prob, next_state, reward, done = self.P[state][action][i]
+                    Z[action] += prob * self.V[next_state]
 
-        return Z
+            return Z
     
 
     def value_iteration(self):
@@ -137,7 +140,6 @@ class DynamicProgramming:
         ##########################
         ##### YOUR CODE HERE #####
         ##########################
-
         # Compute values
         while True:
             new_V = np.zeros(self.num_states)
@@ -149,13 +151,10 @@ class DynamicProgramming:
                 break
 
             self.V = new_V
-        print(self.V)
 
         # Extract optimal policy
         for state in range(self.num_states):
             self.policy[state] = np.argmax(self.updated_action_values(state))
-
-        print(self.policy)
 
             
     def play_game(self, display=False):
@@ -364,12 +363,12 @@ if __name__ == "__main__":
     env.reset()
 
     print("Testing Value Iteration...")
-    sleep(1)
+    # sleep(1)
     my_policy = DynamicProgramming(env, gamma=0.9, epsilon=0.001) # Instantiate class object
     my_policy.value_iteration() # Iterate to derive the final policy
-    my_policy.play_game() # Play through one episode of the game under the current policy
-    my_policy.print_rewards_info() # Prints information from compute_episode_rewards
-    sleep(1)
+    # my_policy.play_game() # Play through one episode of the game under the current policy
+    # my_policy.print_rewards_info() # Prints information from compute_episode_rewards
+    # sleep(1)
 
     # Compute the episode rewards over 1000 episodes of game playing
     mean_val, var_val, max_val, num_steps_array =  my_policy.compute_episode_rewards(num_episodes=1000, step_limit=1000)
@@ -380,7 +379,11 @@ if __name__ == "__main__":
     ##########################
     ##### YOUR CODE HERE #####
     ##########################
-    raise NotImplementedError
+    plt.hist(num_steps_array, bins=100)
+    plt.title('Steps to Goal')
+    plt.xlabel('Steps')
+    plt.ylabel('Count')
+    plt.savefig('2_3')
     
     
     ### Part 4 - Model Free Q-Learning ###
