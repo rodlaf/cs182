@@ -360,7 +360,7 @@ class QLearning:
         return mean, var, best
 
 
-# if __name__ == "__main__":
+if __name__ == "__main__":
     
     ### Part 3 - Value Iteration ###
     # env = gym.make("FrozenLake-v1", map_name="4x4", is_slippery=True) # Set up the Frozen lake environmnet 
@@ -378,7 +378,7 @@ class QLearning:
     # mean_val, var_val, max_val, num_steps_array =  my_policy.compute_episode_rewards(num_episodes=1000, step_limit=1000)
     # print(f"Mean of Episode Rewards: {mean_val:.2f}, Variance of Episode Rewards: {var_val:.2f}, Best Episode Reward: {max_val}")
     
-    # import matplotlib.pyplot as plt
+    import matplotlib.pyplot as plt
     
     # ##########################
     # ##### YOUR CODE HERE #####
@@ -423,73 +423,73 @@ class QLearning:
 ### Package Imports ###
 import pandas as pd
 from typing import Tuple
+
 ### Package Imports ###
 
-if __name__ == "__main__":
+# if __name__ == "__main__":
     
-    ### Package Imports ###
-    import numpy as np
-    import matplotlib.pyplot as plt
-    from sklearn import datasets
-    from sklearn.linear_model import LogisticRegression
-    ### Package Imports ###
+#     ### Package Imports ###
+#     import numpy as np
+#     from sklearn import datasets
+#     from sklearn.linear_model import LogisticRegression
+#     ### Package Imports ###
     
-    ## Starter-code DO NOT EDIT
-    iris = datasets.load_iris() # Load the dataset from sklearn
-    X = pd.DataFrame(iris.data) # Convery to a pandas dataframe
-    X.columns = pd.Series(iris.feature_names).str.replace(" (cm)","",regex=False).str.replace(" ","_") # Add col headers
-    X = X.loc[:,["petal_length","petal_width"]] # Subset for only the petal features
-    y = iris.target # Extract the response variable
-    X = X.loc[y!=0,:];y = y[y!=0] # Remove one of the classes, the one labeled 0 for this data analysis
-    y = y-1 # Adjust labels to be 0 and 1 instead of 1 and 2 in the response variable
+#     ## Starter-code DO NOT EDIT
+#     iris = datasets.load_iris() # Load the dataset from sklearn
+#     X = pd.DataFrame(iris.data) # Convery to a pandas dataframe
+#     X.columns = pd.Series(iris.feature_names).str.replace(" (cm)","",regex=False).str.replace(" ","_") # Add col headers
+#     X = X.loc[:,["petal_length","petal_width"]] # Subset for only the petal features
+#     y = iris.target # Extract the response variable
+#     X = X.loc[y!=0,:];y = y[y!=0] # Remove one of the classes, the one labeled 0 for this data analysis
+#     y = y-1 # Adjust labels to be 0 and 1 instead of 1 and 2 in the response variable
     
     
-    # Instructions: Use the LogisticRegression module of the sklearn Python library to implement a logistic regression model on 
-    # the Iris dataset. Starter code is provided in pset4.py. The Iris data set contains data about iris flowers. Each data point 
-    # in the data set represent a separate flower examined. The X data describes the flower in terms of petal length and width. 
-    # Our response vector (y) is a boolean vector of 0s and 1s indicating the true species classifications of these flowers into 
-    # 2 distinct categories. Our goal is to build a model to classify iris flowers into these 2 species categories based on their 
-    # petal dimensions alone. Our model will be both descriptive and predictive. 
+#     # Instructions: Use the LogisticRegression module of the sklearn Python library to implement a logistic regression model on 
+#     # the Iris dataset. Starter code is provided in pset4.py. The Iris data set contains data about iris flowers. Each data point 
+#     # in the data set represent a separate flower examined. The X data describes the flower in terms of petal length and width. 
+#     # Our response vector (y) is a boolean vector of 0s and 1s indicating the true species classifications of these flowers into 
+#     # 2 distinct categories. Our goal is to build a model to classify iris flowers into these 2 species categories based on their 
+#     # petal dimensions alone. Our model will be both descriptive and predictive. 
     
-    # Do not use any external libraries other than the ones that have already been imported above.
+#     # Do not use any external libraries other than the ones that have already been imported above.
     
-    # Part A: Plot this dataset with blue dots for y = 0 and orange dots for y = 1. Then run a logistic regression using the features 
-    # x_1 = petal_length and x_2 = petal_width and plot the resulting decision boundary. Be sure to label your plot axes, include a legend 
-    # and a title. Make sure to include your plot in your PDF write-up. 
+#     # Part A: Plot this dataset with blue dots for y = 0 and orange dots for y = 1. Then run a logistic regression using the features 
+#     # x_1 = petal_length and x_2 = petal_width and plot the resulting decision boundary. Be sure to label your plot axes, include a legend 
+#     # and a title. Make sure to include your plot in your PDF write-up. 
     
-    ##########################
-    #### YOUR CODE HERE ####
-    ##########################
-    plt.scatter(X.loc[:, 'petal_length'], X.loc[:, 'petal_width'], c=y)
-    plt.xlabel('Petal Length')
-    plt.ylabel('Petal Width')
+#     ##########################
+#     #### YOUR CODE HERE ####
+#     ##########################
+#     plt.scatter(X.loc[:, 'petal_length'], X.loc[:, 'petal_width'], c=y)
+#     plt.xlabel('Petal Length')
+#     plt.ylabel('Petal Width')
 
-    clf = LogisticRegression(penalty='none').fit(X, y)
+#     clf = LogisticRegression(penalty='none').fit(X, y)
 
-    axes = plt.gca()
-    boundary_x_1_vals = np.array(axes.get_xlim())
-    boundary_x_2_vals = - (boundary_x_1_vals * clf.coef_[0][0] + clf.intercept_) / clf.coef_[0][1]
-    plt.plot(boundary_x_1_vals, boundary_x_2_vals, '-')
+#     axes = plt.gca()
+#     boundary_x_1_vals = np.array(axes.get_xlim())
+#     boundary_x_2_vals = - (boundary_x_1_vals * clf.coef_[0][0] + clf.intercept_) / clf.coef_[0][1]
+#     plt.plot(boundary_x_1_vals, boundary_x_2_vals, '-')
 
-    plt.title('Logistic Regression on Iris Dataset')
-    plt.savefig('4_1')
+#     plt.title('Logistic Regression on Iris Dataset')
+#     plt.savefig('4_1')
 
-    # Part B: What are the estimated coefficients and intercept? (include this in your PDF)
-    print('coefs: ' + str(clf.coef_[0]) + ', intercept: ' + str(clf.intercept_))
-    print('mean accuracy: %f' % clf.score(X, y))
-    print('baseline accuracy for picking majority class: 0.5')
+#     # Part B: What are the estimated coefficients and intercept? (include this in your PDF)
+#     print('coefs: ' + str(clf.coef_[0]) + ', intercept: ' + str(clf.intercept_))
     
-    ##########################
-    #### YOUR CODE HERE ####
-    ##########################
+#     ##########################
+#     #### YOUR CODE HERE ####
+#     ##########################
     
-    # Part C: What is the in-sample accuracy of your model at distinguishing between these 2 plant types? What is the baseline accuracy 
-    # that you'd achieve by simply choosing the majority class? Does this model provide a substantial improvement to that baseline?
-    # (include this in your PDF)
+#     # Part C: What is the in-sample accuracy of your model at distinguishing between these 2 plant types? What is the baseline accuracy 
+#     # that you'd achieve by simply choosing the majority class? Does this model provide a substantial improvement to that baseline?
+#     # (include this in your PDF)
     
-    ##########################
-    #### YOUR CODE HERE ####
-    ##########################
+#     ##########################
+#     #### YOUR CODE HERE ####
+#     ##########################
+#     print('in-sample accuracy: %f' % clf.score(X, y))
+#     print('baseline accuracy for picking majority class: 0.5')
 
 
 
@@ -528,22 +528,40 @@ def perceptron_iter(X:pd.Series, y:float, weight_vector:np.array)->Tuple[np.arra
     ##########################
     ##### YOUR CODE HERE #####
     ##########################
-    raise NotImplementedError
-    
+    y_pred = -1
+    if X.dot(weight_vector) >= 0:
+        y_pred = 1
+
+    if y_pred != y:
+        weight_vector = weight_vector + X * y
+        change = True
+
     return weight_vector, change
 
 def run_perceptron_algo(X:pd.DataFrame, y:np.array, weight_vector:np.array, max_iter:int=1000)->Tuple[np.array,int]:
     """Takes in a dataset denoted by X and y, with a starting weight vector and runs the perceptron algorithm until convergence
     or a max iteration threshold has been exceeded, returns the fitted weight vector and the number of iterations required"""
-    iterations=0
+    iterations = 0
     
     # Hint: Call the perceptron_iter() helper function from above
     
     ##########################
     ##### YOUR CODE HERE #####
     ##########################
-    raise NotImplementedError
-    
+    while iterations < max_iter:
+        converged = True
+
+        for i in range(len(X)):
+            weight_vector, change = perceptron_iter(X.loc[i], y[i], weight_vector)
+            if change:
+                converged = False
+        
+        iterations += 1
+
+        if converged:
+            break
+
+
     return weight_vector, iterations
 
 if __name__ == "__main__":
